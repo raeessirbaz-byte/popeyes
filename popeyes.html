@@ -6,384 +6,694 @@
 <title>Popeyes Louisiana Kitchen</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --orange: #F05A22;
-  --red: #C8102E;
-  --cream: #FFF5E6;
-  --black: #1A1A1A;
-  --white: #FFFFFF;
-  --nav-h: 76px;
-  --nav-h-sm: 58px;
-}
+/* ── RESET & BASE ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { font-family: 'Nunito', sans-serif; color: var(--black); background: var(--white); overflow-x: hidden; }
-h1,h2,h3,h4 { font-family: 'Nunito', sans-serif; font-weight: 900; letter-spacing: -.01em; }
+body { font-family: 'DM Sans', sans-serif; color: #1A1A1A; background: #fff; overflow-x: hidden; }
 img { display: block; }
-a { cursor: pointer; }
+a, button { cursor: pointer; }
 
-/* ── PAGE SWITCH ── */
+:root {
+  --orange: #F05A22;
+  --red:    #C8102E;
+  --cream:  #FFF5E6;
+  --black:  #1A1A1A;
+  --white:  #FFFFFF;
+  --nav-h:  72px;
+}
+
+/* ── NOISE TEXTURE ── */
+.noise { position: relative; }
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 1;
+}
+
+/* ── PAGE SWITCHING ── */
 .page { display: none; }
-.page.active { display: block; animation: pageFade .35s ease; }
-@keyframes pageFade { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+.page.active { display: block; animation: pgIn .3s ease; }
+@keyframes pgIn { from { opacity: 0; } to { opacity: 1; } }
 
 /* ── NAVBAR ── */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  background: var(--black); height: var(--nav-h);
-  display: flex; align-items: center; padding: 0 5%;
-  transition: height .3s ease, box-shadow .3s ease;
+  height: var(--nav-h);
+  background: var(--black);
+  display: flex; align-items: center;
+  padding: 0 5%;
+  transition: height .3s, background .3s, backdrop-filter .3s;
 }
-.navbar.scrolled { height: var(--nav-h-sm); box-shadow: 0 4px 24px rgba(0,0,0,.5); }
-.nav-inner { display: flex; align-items: center; width: 100%; max-width: 1400px; margin: 0 auto; gap: 2rem; }
-.nav-logo { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.9rem; color: var(--orange); text-decoration: none; letter-spacing: .04em; flex-shrink: 0; }
+.navbar.scrolled {
+  height: 56px;
+  background: rgba(26,26,26,.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.nav-inner {
+  display: flex; align-items: center; width: 100%;
+  max-width: 1400px; margin: 0 auto;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.7rem; letter-spacing: .06em;
+  color: var(--orange); text-decoration: none; flex-shrink: 0;
+}
 .nav-logo span { color: var(--white); }
-.nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; margin: 0 auto; }
+.nav-links {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none; margin: 0 auto;
+}
 .nav-links a {
-  color: rgba(255,255,255,.75); text-decoration: none; font-size: .85rem;
-  font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
-  position: relative; padding-bottom: 3px; transition: color .2s; cursor: pointer;
+  color: rgba(255,255,255,.72); text-decoration: none;
+  font-size: .82rem; font-weight: 500;
+  letter-spacing: .07em; text-transform: uppercase;
+  position: relative; padding-bottom: 6px;
+  transition: color .2s;
 }
-.nav-links a::after {
-  content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
-  height: 2px; background: var(--orange); transform: scaleX(0); transition: transform .2s ease;
+.nav-links a:hover { color: #fff; }
+.nav-links a.active { color: #fff; }
+.nav-links a.active::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px;
+  background: var(--orange); border-radius: 50%;
 }
-.nav-links a:hover, .nav-links a.active { color: var(--white); }
-.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
 .nav-btns { display: flex; gap: .6rem; flex-shrink: 0; }
 
 /* ── BUTTONS ── */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
-  padding: .6rem 1.4rem; border-radius: 4px;
-  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: .82rem;
-  text-transform: uppercase; letter-spacing: .06em;
-  cursor: pointer; border: none; text-decoration: none;
-  transition: background .22s ease, transform .15s ease, border-color .22s;
-  position: relative; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 48px; padding: 0 24px;
+  font-family: 'DM Sans', sans-serif; font-weight: 700;
+  font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+  border: none; border-radius: 0; cursor: pointer;
+  text-decoration: none; transition: background .2s, color .2s, border-color .2s;
 }
-.btn:hover { transform: translateY(-1px); }
-.btn:active { transform: translateY(0); }
-.btn-orange { background: var(--orange); color: var(--white); }
+.btn-orange { background: var(--orange); color: #fff; }
 .btn-orange:hover { background: #d94e1e; }
-.btn-red { background: var(--red); color: var(--white); }
+.btn-white-outline { background: transparent; color: #fff; border: 2px solid #fff; }
+.btn-white-outline:hover { background: #fff; color: var(--black); }
+.btn-red { background: var(--red); color: #fff; }
 .btn-red:hover { background: #a80d24; }
-.btn-outline { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,.45); }
-.btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,.08); }
-.btn-outline-dark { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,.5); }
-.btn-outline-dark:hover { background: rgba(255,255,255,.12); border-color: var(--white); }
-.btn-lg { padding: .85rem 2.2rem; font-size: .95rem; }
+.btn-red-outline { background: transparent; color: #fff; border: 2px solid #fff; }
+.btn-red-outline:hover { background: #fff; color: var(--red); }
+.btn-black { background: var(--black); color: #fff; }
+.btn-black:hover { background: var(--orange); color: #fff; }
+.btn-pill { border-radius: 100px; background: var(--black); color: #fff; font-size: .82rem; padding: 0 20px; }
+.btn-pill:hover { background: #333; }
+.btn-nav { height: 38px; padding: 0 16px; font-size: .76rem; }
 
-/* ── GRAIN ── */
-.grain::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
-  background-repeat: repeat; background-size: 200px;
-}
-.grain > * { position: relative; z-index: 2; }
+/* ── HAMBURGER ── */
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 5px; margin-left: auto; margin-right: .5rem; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #fff; }
+.mob-nav { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; background: var(--black); padding: 1.5rem 5%; z-index: 999; flex-direction: column; gap: 1rem; border-top: 1px solid rgba(255,255,255,.1); }
+.mob-nav.open { display: flex; }
+.mob-nav a { color: rgba(255,255,255,.8); text-decoration: none; font-size: 1rem; font-weight: 500; padding: .5rem 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+.mob-nav .btn { justify-content: center; }
 
-/* ── SECTION HELPERS ── */
-.section-tag { display: inline-block; color: var(--orange); font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; margin-bottom: .5rem; }
-.section-title { font-size: clamp(2.2rem,3.5vw,3.2rem); color: var(--black); line-height: 1; }
-.section-sub { margin-top: .6rem; color: rgba(26,26,26,.55); font-size: .95rem; max-width: 480px; margin-inline: auto; }
-.section-header { text-align: center; margin-bottom: 3rem; }
-
-/* ═══════════════════════════
-   HOME — HERO
-═══════════════════════════ */
+/* ═══════════════════════════════════════════
+   HOME — SECTION 1: HERO
+═══════════════════════════════════════════ */
 .hero {
-  min-height: 100vh; position: relative;
-  background: linear-gradient(160deg, #c0041a 0%, #e8051f 40%, #c8102e 100%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: calc(var(--nav-h) + 30px) 5% 120px;
-  overflow: hidden; text-align: center;
-}
-/* scattered decorative blobs */
-.hero::before {
-  content: '';
-  position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 340px 340px at 8% 20%, rgba(255,180,0,.13) 0%, transparent 70%),
-    radial-gradient(ellipse 260px 260px at 92% 15%, rgba(255,255,255,.07) 0%, transparent 70%),
-    radial-gradient(ellipse 200px 200px at 80% 80%, rgba(150,0,0,.3) 0%, transparent 70%);
-}
-.hero-welcome { font-size: .82rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,.85); margin-bottom: 1rem; position: relative; z-index: 2; }
-.hero-hl {
-  font-size: clamp(3.8rem,8.5vw,7.5rem); line-height: .92; color: var(--white);
-  margin-bottom: .6rem; position: relative; z-index: 2;
-  text-shadow: 0 4px 24px rgba(0,0,0,.25);
-}
-.hero-hl .oa { color: #FFD84D; }
-/* scene wraps center image + all orbiting bubbles */
-.hero-scene {
-  position: relative; z-index: 3;
-  width: min(680px, 88vw); margin: -0.5rem auto 0;
-}
-.hero-food-center {
-  width: 100%;
-  filter: drop-shadow(0 30px 70px rgba(0,0,0,.5));
-  animation: heroFloat 4s ease-in-out infinite;
-}
-.hero-food-center img {
-  width: 100%; height: auto; object-fit: cover;
-  border-radius: 50%; aspect-ratio: 1;
-  display: block;
-}
-@keyframes heroFloat {
-  0%,100% { transform: translateY(0px) rotate(-1deg); }
-  50%      { transform: translateY(-16px) rotate(1deg); }
-}
-/* orbiting bubble base */
-.bubble {
-  position: absolute; border-radius: 50%; object-fit: cover;
-  pointer-events: none; border: 3px solid rgba(255,255,255,.35);
-  box-shadow: 0 8px 24px rgba(0,0,0,.35);
-}
-/* 8 bubbles in a ring — clock positions */
-.b1 { width: 105px; height: 105px; top:  2%;  left: -9%;  animation: bf1 5.0s ease-in-out infinite; }
-.b2 { width:  85px; height:  85px; top: -5%;  left: 22%;  animation: bf2 4.5s ease-in-out infinite; }
-.b3 { width:  90px; height:  90px; top: -5%;  right: 22%; animation: bf3 5.5s ease-in-out infinite; }
-.b4 { width: 100px; height: 100px; top:  2%;  right: -9%; animation: bf4 4.8s ease-in-out infinite; }
-.b5 { width:  95px; height:  95px; bottom: 2%; right: -9%; animation: bf5 5.2s ease-in-out infinite; }
-.b6 { width:  80px; height:  80px; bottom:-5%; right: 22%; animation: bf6 4.3s ease-in-out infinite; }
-.b7 { width:  88px; height:  88px; bottom:-5%; left: 22%;  animation: bf7 5.8s ease-in-out infinite; }
-.b8 { width: 100px; height: 100px; bottom: 2%; left: -9%;  animation: bf8 4.6s ease-in-out infinite; }
-@keyframes bf1 { 0%,100%{transform:translateY(0)   rotate(0deg)} 50%{transform:translateY(-10px) rotate(6deg)} }
-@keyframes bf2 { 0%,100%{transform:translateY(0)   rotate(0deg)} 50%{transform:translateY(-13px) rotate(-5deg)} }
-@keyframes bf3 { 0%,100%{transform:translateY(0)   rotate(0deg)} 50%{transform:translateY(-9px)  rotate(7deg)} }
-@keyframes bf4 { 0%,100%{transform:translateY(0)   rotate(0deg)} 50%{transform:translateY(-12px) rotate(-6deg)} }
-@keyframes bf5 { 0%,100%{transform:translateY(0)   rotate(0deg)} 50%{transform:translateY(10px)  rotate(5deg)} }
-@keyframes bf6 { 0%,100%{transform:translateY(0)   rotate(0deg)} 50%{transform:translateY(11px)  rotate(-7deg)} }
-@keyframes bf7 { 0%,100%{transform:translateY(0)   rotate(0deg)} 50%{transform:translateY(12px)  rotate(6deg)} }
-@keyframes bf8 { 0%,100%{transform:translateY(0)   rotate(0deg)} 50%{transform:translateY(9px)   rotate(-5deg)} }
-/* sparks / lightning deco */
-.hero-spark {
-  position: absolute; font-size: 1.6rem; pointer-events: none; z-index: 2;
-  animation: sparkPulse 2.5s ease-in-out infinite;
-  color: #FFD84D;
-}
-.hero-spark:nth-child(1) { top: 28%; left: 22%; animation-delay: 0s; }
-.hero-spark:nth-child(2) { top: 35%; right: 20%; animation-delay: .6s; }
-.hero-spark:nth-child(3) { bottom: 32%; left: 30%; animation-delay: 1.2s; }
-.hero-spark:nth-child(4) { bottom: 28%; right: 28%; animation-delay: 1.8s; }
-@keyframes sparkPulse {
-  0%,100% { opacity: .4; transform: scale(.8); }
-  50%      { opacity: 1;  transform: scale(1.2); }
-}
-.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; position: relative; z-index: 4; margin-top: -1rem; }
-/* wave bottom */
-.hero-wave {
-  position: absolute; bottom: -2px; left: 0; right: 0; z-index: 5;
-  line-height: 0;
-}
-.hero-wave svg { display: block; width: 100%; }
-
-/* ── CHIPS ── */
-.chips-bar { background: var(--white); padding: 1.4rem 5%; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid rgba(0,0,0,.07); }
-.chips-bar::-webkit-scrollbar { display: none; }
-.chips-inner { display: flex; gap: .65rem; max-width: 1400px; margin: 0 auto; white-space: nowrap; }
-.chip {
-  display: inline-flex; align-items: center; gap: .35rem;
-  padding: .5rem 1.3rem; border-radius: 100px;
-  background: rgba(0,0,0,.05); color: rgba(26,26,26,.7);
-  font-size: .84rem; font-weight: 600; cursor: pointer;
-  border: 1.5px solid rgba(0,0,0,.1); transition: all .2s ease; flex-shrink: 0;
-}
-.chip:hover, .chip.active { background: var(--orange); border-color: var(--orange); color: var(--white); }
-
-/* ── FEATURED ── */
-.featured { background: var(--cream); padding: 6rem 5%; }
-.cards-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.6rem; max-width: 1400px; margin: 0 auto; }
-.food-card { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.08); transition: transform .3s, box-shadow .3s; }
-.food-card:hover { transform: translateY(-8px); box-shadow: 0 18px 45px rgba(0,0,0,.15); }
-.card-img { width: 100%; height: 220px; object-fit: cover; }
-.card-body { padding: 1.2rem 1.4rem 1.4rem; }
-.card-name { font-size: 1.35rem; color: var(--black); margin-bottom: .35rem; }
-.card-desc { font-size: .84rem; color: rgba(26,26,26,.55); line-height: 1.55; margin-bottom: 1rem; }
-.card-foot { display: flex; align-items: center; justify-content: space-between; }
-.card-price { font-family: 'Nunito', sans-serif; font-size: 1.6rem; color: var(--orange); }
-
-/* ── PROMO BANNER ── */
-.promo { background: var(--orange); padding: 5rem 5%; overflow: hidden; position: relative; }
-.promo-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
-.promo-text { flex: 0 0 54%; }
-.promo-eye { font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-bottom: .9rem; }
-.promo-hl { font-size: clamp(2.8rem,5vw,4.8rem); color: var(--white); line-height: 1; margin-bottom: 1.4rem; }
-.promo-body { color: rgba(255,255,255,.8); font-size: .95rem; line-height: 1.7; margin-bottom: 1.8rem; max-width: 440px; }
-.promo-img-wrap { flex: 0 0 36%; display: flex; justify-content: center; }
-.promo-img { width: 100%; max-width: 360px; height: 280px; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,.3); transform: rotate(-2deg); }
-
-/* ── APP SECTION ── */
-.app-sec { background: var(--black); padding: 6rem 5%; }
-.app-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 5rem; }
-.app-text { flex: 1; }
-.app-hl { font-size: clamp(2.4rem,3.8vw,3.8rem); color: var(--white); line-height: 1; margin-bottom: 1.2rem; }
-.app-copy { color: rgba(255,255,255,.6); font-size: .98rem; line-height: 1.75; margin-bottom: 2.4rem; max-width: 400px; }
-.store-btns { display: flex; gap: .9rem; flex-wrap: wrap; }
-.store-btn {
-  display: inline-flex; align-items: center; gap: .7rem;
-  padding: .7rem 1.4rem; background: rgba(255,255,255,.07);
-  border: 1.5px solid rgba(255,255,255,.18); border-radius: 10px;
-  text-decoration: none; cursor: pointer; transition: all .22s ease;
-}
-.store-btn:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.38); transform: translateY(-2px); }
-.store-ico { font-size: 1.7rem; line-height: 1; }
-.store-lbl { font-size: .68rem; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .08em; display: block; }
-.store-name { font-size: .95rem; font-weight: 600; color: var(--white); display: block; }
-.phone-wrap { flex: 0 0 300px; display: flex; justify-content: center; }
-.phone {
-  width: 240px; height: 490px;
-  background: linear-gradient(160deg,#2a2a2a,#111);
-  border-radius: 38px; border: 2.5px solid rgba(255,255,255,.13);
-  box-shadow: 0 28px 70px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+  height: 100vh; min-height: 600px;
+  background: var(--black);
+  display: flex; align-items: stretch;
   position: relative; overflow: hidden;
 }
-.phone-notch {
-  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 100px; height: 24px; background: #0a0a0a;
-  border-radius: 0 0 18px 18px; z-index: 3;
+.hero-watermark {
+  position: absolute; right: -1vw; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18vw; color: #fff;
+  opacity: .04; letter-spacing: .02em;
+  pointer-events: none; z-index: 0;
+  white-space: nowrap; line-height: 1;
 }
-.phone-screen {
-  position: absolute; inset: 8px 3px 3px;
-  background: linear-gradient(180deg, var(--orange) 0%, #c03e14 28%, #111 28%);
-  border-radius: 32px; padding: 38px 14px 14px;
-  display: flex; flex-direction: column; gap: 9px; overflow: hidden;
+.hero-left {
+  flex: 0 0 50%; display: flex; flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--nav-h) + 40px) 5% 60px 5%;
+  position: relative; z-index: 2;
+  max-width: 700px;
 }
-.phone-brand { font-family: 'Nunito', sans-serif; font-size: 1.1rem; color: var(--white); text-align: center; letter-spacing: .1em; }
-.ph-card { background: rgba(255,255,255,.08); border-radius: 10px; flex-shrink: 0; }
-.ph-card-tall { height: 100px; overflow: hidden; border-radius: 10px; flex-shrink: 0; }
-.ph-card-tall img { width: 100%; height: 100%; object-fit: cover; }
-.ph-card-sm { height: 52px; }
+.hero-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 1.4rem;
+}
+.hero-hl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 10vw, 140px);
+  line-height: .88; letter-spacing: -.02em;
+  color: #fff; margin-bottom: 1.6rem;
+}
+.hero-body {
+  font-size: 16px; font-weight: 300;
+  color: var(--cream); line-height: 1.6;
+  margin-bottom: 2.4rem;
+  max-width: 420px;
+}
+.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-right {
+  flex: 0 0 50%; position: relative; overflow: visible;
+}
+.hero-img {
+  position: absolute;
+  top: -30px; right: -30px;
+  height: 110%; width: auto;
+  object-fit: cover;
+  z-index: 2;
+}
 
-/* ── FOOTER ── */
-footer {
-  background: #0d0d0d; padding: 5rem 5% 2rem;
-  color: rgba(255,255,255,.55);
+/* ═══════════════════════════════════════════
+   HOME — SECTION 2: CATEGORY STRIP
+═══════════════════════════════════════════ */
+.cat-strip {
+  background: var(--cream);
+  padding: 32px 5%;
+}
+.cat-strip-inner { max-width: 1400px; margin: 0 auto; }
+.cat-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px; letter-spacing: .02em;
+  color: var(--black); margin-bottom: 20px;
+}
+.cat-scroll {
+  display: flex; gap: 12px;
+  overflow-x: auto; scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.cat-scroll::-webkit-scrollbar { display: none; }
+.cat-card {
+  flex: 0 0 140px; width: 140px;
+  border: 2px solid var(--black);
+  background: transparent;
+  padding: 16px 8px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: .02em;
+  color: var(--black);
+}
+.cat-card .cat-icon { font-size: 1.8rem; line-height: 1; }
+.cat-card:hover { background: var(--black); color: #fff; border-color: var(--black); }
+.cat-card.active { background: var(--orange); color: #fff; border-color: var(--orange); }
+
+/* ═══════════════════════════════════════════
+   HOME — SECTION 3: FEATURED ITEMS
+═══════════════════════════════════════════ */
+.featured {
+  background: var(--cream);
+  padding: 72px 5% 80px;
+}
+.featured-inner { max-width: 1400px; margin: 0 auto; }
+.feat-heading-wrap {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 48px;
+}
+.feat-heading-bar {
+  width: 4px; height: 64px; background: var(--orange); flex-shrink: 0;
+}
+.feat-heading {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(40px, 5vw, 64px);
+  letter-spacing: .02em; line-height: 1;
+  color: var(--black);
+}
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding-top: 20px;
+}
+.feat-card {
+  background: var(--white);
+  border: 2px solid var(--black);
+  position: relative;
+  transition: transform .2s ease, border-color .2s ease;
+}
+.feat-card:hover { transform: translateY(-6px); border-color: var(--orange); }
+.feat-img-wrap {
+  width: 100%; height: 220px; overflow: hidden;
+  margin-top: -16px; position: relative; z-index: 2;
+}
+.feat-img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .4s ease;
+}
+.feat-card:hover .feat-img { transform: scale(1.04); }
+.feat-body { padding: 16px 20px 20px; }
+.feat-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: .02em;
+  color: var(--black); margin-bottom: 6px;
+}
+.feat-desc {
+  font-size: 13px; color: #666;
+  line-height: 1.55; margin-bottom: 14px;
+}
+.feat-foot { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.feat-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: .02em;
+  color: var(--orange);
+}
+.feat-btn {
+  display: block; width: 100%;
+  height: 44px; border: none; border-radius: 0;
+  background: var(--black); color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: .02em;
+  cursor: pointer; transition: background .2s;
+}
+.feat-btn:hover { background: var(--orange); }
+
+/* ═══════════════════════════════════════════
+   HOME — SECTION 4: PROMO BANNER
+═══════════════════════════════════════════ */
+.promo {
+  background: var(--red);
+  height: 420px; position: relative;
+  overflow: hidden;
+  display: flex; align-items: stretch;
+}
+.promo-watermark {
+  position: absolute; right: 5%; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 200px; line-height: 1;
+  color: #fff; opacity: .06;
+  pointer-events: none; z-index: 0;
+  letter-spacing: .02em; white-space: nowrap;
+}
+.promo-left {
+  flex: 0 0 55%; display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 0 5% 0 5%;
+  position: relative; z-index: 2;
+}
+.promo-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem; font-weight: 600;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.7); margin-bottom: 14px;
+}
+.promo-hl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 6vw, 96px);
+  line-height: .9; letter-spacing: .02em;
+  color: #fff; margin-bottom: 16px;
+}
+.promo-body {
+  font-size: .95rem; color: var(--cream);
+  line-height: 1.6; margin-bottom: 28px;
+  max-width: 400px;
+}
+.promo-right {
+  flex: 0 0 45%; position: relative; overflow: visible;
+}
+.promo-img {
+  position: absolute;
+  top: -40px; left: 0;
+  height: calc(100% + 40px); width: 100%;
+  object-fit: cover;
+  z-index: 2;
+}
+
+/* ═══════════════════════════════════════════
+   HOME — SECTION 5: WHY POPEYES
+═══════════════════════════════════════════ */
+.why {
+  background: var(--black);
+  padding: 80px 5%;
+}
+.why-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+}
+.why-col {
+  padding: 0 40px;
+  position: relative;
+}
+.why-col + .why-col::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(255,255,255,.2);
+}
+.why-col:first-child { padding-left: 0; }
+.why-col:last-child { padding-right: 0; }
+.why-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px; letter-spacing: .02em;
+  color: var(--orange); line-height: 1;
+  margin-bottom: 12px;
+}
+.why-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: .02em;
+  color: #fff; margin-bottom: 10px;
+}
+.why-desc {
+  font-size: 13px; color: rgba(255,255,255,.5);
+  line-height: 1.65;
+}
+
+/* ═══════════════════════════════════════════
+   HOME — SECTION 6: APP DOWNLOAD
+═══════════════════════════════════════════ */
+.app-sec {
+  background: var(--cream);
+  padding: 80px 5%;
+  overflow: hidden;
+}
+.app-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; gap: 4rem;
+}
+.app-text { flex: 0 0 50%; }
+.app-hl {
+  font-family: 'Playfair Display', serif;
+  font-style: italic; font-weight: 700;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.15; color: var(--black);
+  margin-bottom: 18px;
+}
+.app-body {
+  font-size: 15px; color: #555;
+  line-height: 1.7; margin-bottom: 28px;
+  max-width: 400px;
+}
+.app-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.app-right {
+  flex: 0 0 50%; display: flex;
+  justify-content: center; align-items: center;
+  position: relative; min-height: 360px;
+}
+.app-circle {
+  width: 600px; height: 600px; max-width: 90vw; max-height: 90vw;
+  background: var(--orange);
+  border-radius: 50%;
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+.app-phone {
+  position: relative; z-index: 1;
+  width: 200px; height: 360px;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 24px 60px rgba(0,0,0,.35);
+}
+.app-phone-screen {
+  width: 180px; height: 340px;
+  background: linear-gradient(180deg, #F05A22 0%, #C8102E 35%, #111 35%);
+  display: flex; flex-direction: column;
+  align-items: center; padding: 24px 12px 12px;
+  gap: 8px;
+}
+.app-phone-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem; letter-spacing: .1em; color: #fff;
+}
+.app-phone-img {
+  width: 100%; height: 100px; object-fit: cover;
+  border-radius: 0;
+}
+.app-phone-card {
+  width: 100%; height: 42px;
+  background: rgba(255,255,255,.1);
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+.footer {
+  background: var(--black);
+  padding: 64px 5% 0;
 }
 .footer-inner { max-width: 1400px; margin: 0 auto; }
-.footer-top { display: grid; grid-template-columns: 1.4fr repeat(4,1fr); gap: 3rem; margin-bottom: 3.5rem; }
-.footer-brand .nav-logo { font-size: 2rem; display: inline-block; margin-bottom: .9rem; }
-.footer-brand p { font-size: .875rem; line-height: 1.7; max-width: 260px; margin-bottom: 1.4rem; }
-.socials { display: flex; gap: .6rem; }
-.soc {
-  width: 36px; height: 36px; border-radius: 7px;
-  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1);
-  display: flex; align-items: center; justify-content: center;
-  font-size: .9rem; cursor: pointer; text-decoration: none;
-  transition: background .2s, border-color .2s;
+.footer-top {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3rem; padding-bottom: 48px;
 }
-.soc:hover { background: var(--orange); border-color: var(--orange); }
-.footer-col h4 { font-family: 'Nunito', sans-serif; font-size: 1.15rem; color: var(--white); letter-spacing: .05em; margin-bottom: 1.1rem; }
-.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .65rem; }
-.footer-col a { color: rgba(255,255,255,.5); text-decoration: none; font-size: .875rem; transition: color .2s; }
+.footer-col h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px; letter-spacing: .02em;
+  color: var(--orange); margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col a {
+  font-size: 13px; color: rgba(255,255,255,.7);
+  text-decoration: none; transition: color .2s;
+}
 .footer-col a:hover { color: var(--orange); }
-.footer-bot { border-top: 1px solid rgba(255,255,255,.07); padding-top: 1.8rem; display: flex; align-items: center; justify-content: space-between; font-size: .82rem; gap: 1rem; flex-wrap: wrap; }
-.footer-bot a { color: rgba(255,255,255,.35); text-decoration: none; }
-.footer-bot a:hover { color: var(--white); }
-
-/* ═══════════════════════════
-   MENU PAGE
-═══════════════════════════ */
-.menu-hero {
-  background: var(--black); position: relative;
-  padding: calc(var(--nav-h) + 5rem) 5% 5rem;
-  text-align: center; overflow: hidden;
+.footer-div {
+  border: none; border-top: 1px solid rgba(255,255,255,.15);
+  margin: 0;
 }
-.menu-hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 110%, rgba(240,90,34,.18) 0%, transparent 65%);
+.footer-bot {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 24px 0; flex-wrap: wrap; gap: 1rem;
+}
+.footer-bot-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem; letter-spacing: .06em;
+  color: var(--orange); text-decoration: none;
+}
+.footer-bot-logo span { color: #fff; }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,.4); }
+.footer-socials { display: flex; gap: 8px; }
+.soc-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.2);
+  background: transparent; color: rgba(255,255,255,.6);
+  font-size: .72rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.soc-btn:hover { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+/* ═══════════════════════════════════════════
+   MENU — HERO
+═══════════════════════════════════════════ */
+.menu-hero {
+  height: 280px; background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; position: relative; overflow: hidden;
+  padding-top: var(--nav-h);
+}
+.menu-hero-wm {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(120px, 18vw, 260px);
+  color: #fff; opacity: .05; letter-spacing: .02em;
+  pointer-events: none; white-space: nowrap; line-height: 1;
 }
 .menu-hero-content { position: relative; z-index: 2; }
-.menu-hl { font-size: clamp(4rem,8vw,8rem); color: var(--white); line-height: 1; margin-bottom: .4rem; }
-.orange-bar { width: 110px; height: 5px; background: var(--orange); border-radius: 3px; margin: 0 auto 1.4rem; }
-.menu-sub { color: rgba(255,255,255,.55); font-size: 1.05rem; max-width: 480px; margin: 0 auto; line-height: 1.7; }
+.menu-hero-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--orange); margin-bottom: 10px;
+}
+.menu-hero-hl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(52px, 8vw, 96px);
+  letter-spacing: .02em; color: #fff;
+  line-height: 1; margin-bottom: 14px;
+}
+.menu-hero-line {
+  width: 60px; height: 3px;
+  background: var(--orange);
+  margin: 0 auto;
+}
 
-/* filter tabs */
+/* ═══════════════════════════════════════════
+   MENU — FILTER TABS
+═══════════════════════════════════════════ */
 .filter-bar {
-  background: var(--white); border-bottom: 1px solid rgba(0,0,0,.08);
   position: sticky; top: var(--nav-h); z-index: 99;
+  background: #fff;
+  border-bottom: 1px solid var(--black);
   padding: 0 5%; overflow-x: auto; scrollbar-width: none;
 }
 .filter-bar::-webkit-scrollbar { display: none; }
-.filter-inner { display: flex; max-width: 1400px; margin: 0 auto; white-space: nowrap; }
+.filter-inner {
+  display: flex; max-width: 1400px;
+  margin: 0 auto; white-space: nowrap;
+}
 .ftab {
-  padding: 1.1rem 1.4rem; background: none; border: none;
+  padding: 18px 24px; background: none; border: none;
   border-bottom: 3px solid transparent;
-  font-family: 'Nunito', sans-serif; font-size: .82rem; font-weight: 600;
-  color: rgba(26,26,26,.45); cursor: pointer; transition: all .2s;
-  flex-shrink: 0; text-transform: uppercase; letter-spacing: .05em;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px; letter-spacing: .02em;
+  text-transform: uppercase; color: var(--black);
+  cursor: pointer; transition: color .2s, border-color .2s;
+  flex-shrink: 0;
 }
 .ftab:hover { color: var(--orange); }
 .ftab.active { color: var(--orange); border-bottom-color: var(--orange); }
 
-/* menu grid */
-.menu-grid-wrap { background: #f7f7f7; padding: 3.5rem 5%; }
-.menu-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.4rem; max-width: 1400px; margin: 0 auto; }
-.m-card { background: var(--white); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.07); transition: transform .3s, box-shadow .3s; }
-.m-card:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(0,0,0,.13); }
-.m-card.hide { display: none; }
-.m-card-img { width: 100%; height: 170px; object-fit: cover; }
-.m-card-body { padding: .9rem 1.1rem 1.1rem; }
-.m-card-name { font-size: 1.2rem; color: var(--black); margin-bottom: .3rem; }
-.m-card-desc { font-size: .78rem; color: rgba(26,26,26,.52); line-height: 1.5; margin-bottom: .7rem; }
-.m-card-foot { display: flex; align-items: center; justify-content: space-between; }
-.m-card-price { font-family: 'Nunito', sans-serif; font-size: 1.35rem; color: var(--orange); }
-
-/* mid banner */
-.mid-banner { background: var(--orange); padding: 4.5rem 5%; text-align: center; position: relative; overflow: hidden; }
-.mid-banner::before {
-  content: ''; position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
-  background-size: 200px;
+/* ═══════════════════════════════════════════
+   MENU — CARD GRID
+═══════════════════════════════════════════ */
+.menu-grid-wrap {
+  background: var(--cream);
+  padding: 48px 5%;
 }
-.mid-banner-content { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
-.mid-banner-hl { font-size: clamp(2.4rem,4vw,3.8rem); color: var(--white); line-height: 1.05; margin-bottom: .9rem; }
-.mid-banner-sub { color: rgba(255,255,255,.8); font-size: 1rem; margin-bottom: 2rem; line-height: 1.65; }
-
-/* ── MOBILE ── */
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; margin-left: auto; margin-right: .5rem; }
-.hamburger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: all .3s; }
-.mob-nav {
-  display: none; position: fixed;
-  top: var(--nav-h); left: 0; right: 0;
-  background: var(--black); padding: 1.8rem 5%;
-  z-index: 998; flex-direction: column; gap: 1.25rem;
-  border-top: 1px solid rgba(255,255,255,.08);
+.menu-grid-inner { max-width: 1400px; margin: 0 auto; }
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }
-.mob-nav.open { display: flex; }
-.mob-nav a { color: rgba(255,255,255,.8); text-decoration: none; font-size: 1.1rem; font-weight: 500; cursor: pointer; padding: .5rem 0; border-bottom: 1px solid rgba(255,255,255,.07); }
-.mob-nav .btn { text-align: center; justify-content: center; }
-
-/* ── RESPONSIVE ── */
-@media(max-width:1200px) {
-  .menu-grid { grid-template-columns: repeat(3,1fr); }
-  .footer-top { grid-template-columns: 1fr 1fr 1fr; }
+.m-card {
+  background: #fff;
+  border: 2px solid var(--black);
+  transition: transform .2s ease, border-color .2s ease, opacity .2s ease;
 }
-@media(max-width:960px) {
+.m-card:hover { transform: translateY(-4px); border-color: var(--orange); }
+.m-card.hide { opacity: 0; display: none; }
+.m-card-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.m-card-body { padding: 16px; }
+.m-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: .02em;
+  color: var(--black); margin-bottom: 6px;
+}
+.m-card-desc {
+  font-size: 12px; color: #666;
+  line-height: 1.55; margin-bottom: 12px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.m-card-price-row {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 12px;
+}
+.m-card-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px; letter-spacing: .02em;
+  color: var(--orange);
+}
+.m-tag {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  background: var(--red); color: #fff;
+  padding: 2px 7px;
+}
+.m-card-btn {
+  display: block; width: 100%; height: 40px;
+  border: none; border-radius: 0;
+  background: var(--black); color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px; letter-spacing: .02em;
+  cursor: pointer; transition: background .2s;
+}
+.m-card-btn:hover { background: var(--orange); }
+
+/* ═══════════════════════════════════════════
+   MENU — MID BANNER
+═══════════════════════════════════════════ */
+.menu-mid {
+  background: var(--orange);
+  height: 380px; position: relative; overflow: hidden;
+  display: flex; align-items: stretch;
+}
+.menu-mid-wm {
+  position: absolute; right: 2%; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(80px, 14vw, 180px);
+  color: #fff; opacity: .05; letter-spacing: .02em;
+  pointer-events: none; white-space: nowrap; line-height: 1;
+}
+.menu-mid-left {
+  flex: 0 0 55%; display: flex; flex-direction: column;
+  justify-content: center; padding: 0 5%;
+  position: relative; z-index: 2;
+}
+.menu-mid-hl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(44px, 6vw, 72px);
+  letter-spacing: .02em; line-height: .95;
+  color: #fff; margin-bottom: 14px;
+}
+.menu-mid-body {
+  font-size: .95rem; color: rgba(255,255,255,.85);
+  line-height: 1.65; margin-bottom: 24px;
+  max-width: 380px;
+}
+.menu-mid-right {
+  flex: 0 0 45%; position: relative; overflow: visible;
+}
+.menu-mid-img {
+  position: absolute;
+  top: -40px; left: 0;
+  height: calc(100% + 40px); width: 100%;
+  object-fit: cover; z-index: 2;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .menu-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-top { grid-template-columns: repeat(2, 1fr); }
+  .why-inner { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .why-col + .why-col::before { display: none; }
+  .why-col { padding: 0 24px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 32px; }
+  .why-col:first-child, .why-col:nth-child(2) { border-top: none; padding-top: 0; }
+}
+@media (max-width: 900px) {
   .nav-links, .nav-btns { display: none; }
   .hamburger { display: flex; }
-  .cards-grid { grid-template-columns: repeat(2,1fr); }
-  .menu-grid { grid-template-columns: repeat(2,1fr); }
-  .hero-inner { flex-direction: column; text-align: center; }
-  .hero-text { flex: unset; max-width: 100%; }
-  .hero-sub { margin-inline: auto; }
-  .hero-ctas { justify-content: center; }
-  .promo-inner { flex-direction: column; text-align: center; }
-  .promo-text { flex: unset; }
-  .promo-body { max-width: 100%; }
-  .promo-img-wrap { flex: unset; }
-  .app-inner { flex-direction: column; gap: 3rem; text-align: center; }
-  .app-copy { max-width: 100%; }
-  .store-btns { justify-content: center; }
-  .phone-wrap { flex: unset; }
+  .hero { flex-direction: column; height: auto; min-height: 100vh; }
+  .hero-left { flex: unset; max-width: 100%; padding: calc(var(--nav-h) + 40px) 5% 40px; }
+  .hero-right { flex: unset; min-height: 280px; }
+  .hero-img { top: 0; right: -15px; height: 100%; }
+  .feat-grid { grid-template-columns: repeat(2, 1fr); }
+  .menu-grid { grid-template-columns: repeat(2, 1fr); }
+  .promo { flex-direction: column; height: auto; }
+  .promo-left { flex: unset; padding: 48px 5%; }
+  .promo-right { flex: unset; min-height: 240px; }
+  .promo-img { top: 0; height: 100%; }
+  .promo-watermark { font-size: 120px; }
+  .app-inner { flex-direction: column; gap: 3rem; }
+  .app-text { flex: unset; }
+  .app-right { flex: unset; min-height: 300px; }
+  .app-circle { width: 300px; height: 300px; }
+  .menu-mid { flex-direction: column; height: auto; }
+  .menu-mid-left { flex: unset; padding: 48px 5% 40px; }
+  .menu-mid-right { flex: unset; min-height: 200px; }
+  .menu-mid-img { top: 0; height: 100%; }
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
-@media(max-width:600px) {
-  .cards-grid, .menu-grid { grid-template-columns: 1fr; }
+@media (max-width: 600px) {
+  .feat-grid, .menu-grid { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr; }
   .footer-bot { flex-direction: column; text-align: center; }
+  .why-inner { grid-template-columns: 1fr; }
+  .why-col:nth-child(2) { border-top: 1px solid rgba(255,255,255,.1); padding-top: 32px; }
+  .promo-watermark { font-size: 80px; }
 }
 </style>
 </head>
@@ -393,7 +703,7 @@ footer {
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
     <a class="nav-logo" onclick="go('home')">POPE<span>YES</span></a>
-    <button class="hamburger" id="ham" onclick="toggleMob()" aria-label="Menu">
+    <button class="hamburger" id="ham" onclick="toggleMob()">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links">
@@ -404,510 +714,484 @@ footer {
       <li><a href="#">App</a></li>
     </ul>
     <div class="nav-btns">
-      <button class="btn btn-outline" onclick="go('menu')">Order Now</button>
-      <button class="btn btn-orange">Find Location</button>
+      <button class="btn btn-white-outline btn-nav" onclick="go('menu')">Order Now</button>
+      <button class="btn btn-orange btn-nav">Find Location</button>
     </div>
   </div>
 </nav>
 
-<!-- mobile nav -->
 <div class="mob-nav" id="mobNav">
   <a onclick="go('home');toggleMob()">Home</a>
   <a onclick="go('menu');toggleMob()">Menu</a>
   <a href="#">Locations</a>
   <a href="#">Deals</a>
   <a href="#">App</a>
-  <button class="btn btn-orange btn-lg" onclick="go('menu');toggleMob()">Order Now</button>
-  <button class="btn btn-outline btn-lg">Find Location</button>
+  <button class="btn btn-orange" style="justify-content:center;border-radius:0;" onclick="go('menu');toggleMob()">Order Now</button>
 </div>
 
-<!-- ══════════════════════════════════
+<!-- ══════════════════════════════
      HOME PAGE
-══════════════════════════════════ -->
+══════════════════════════════ -->
 <div id="homePage" class="page active">
 
-  <!-- Hero -->
-  <section class="hero grain">
-    <!-- floating sparks -->
-    <span class="hero-spark">✦</span>
-    <span class="hero-spark">✦</span>
-    <span class="hero-spark">✦</span>
-    <span class="hero-spark">✦</span>
-
-    <!-- welcome + headline -->
-    <p class="hero-welcome">— Welcome to Popeyes Louisiana Kitchen —</p>
-    <h1 class="hero-hl">Taste The<br><span class="oa">Bold.</span></h1>
-
-    <!-- center image + orbiting bubbles -->
-    <div class="hero-scene">
-      <!-- 8 orbiting food bubbles -->
-      <img class="bubble b1" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=220&fit=crop&q=80" alt="" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
-      <img class="bubble b2" src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=200&fit=crop&q=80" alt="" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
-      <img class="bubble b3" src="https://images.unsplash.com/photo-1559181567-c3190bfbf716?w=200&fit=crop&q=80" alt="" onerror="this.style.background='#e06012';this.removeAttribute('src')">
-      <img class="bubble b4" src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=220&fit=crop&q=80" alt="" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
-      <img class="bubble b5" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=220&fit=crop&q=80" alt="" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
-      <img class="bubble b6" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=200&fit=crop&q=80" alt="" onerror="this.style.background='#402010';this.removeAttribute('src')">
-      <img class="bubble b7" src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf5f?w=200&fit=crop&q=80" alt="" onerror="this.style.background='#888';this.removeAttribute('src')">
-      <img class="bubble b8" src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=220&fit=crop&q=80" alt="" onerror="this.style.background='#a00020';this.removeAttribute('src')">
-
-      <!-- center hero image -->
-      <div class="hero-food-center">
-        <img
-          src="https://images.unsplash.com/photo-1562967914-608f82629710?w=800&fit=crop&q=80"
-          alt="Popeyes Chicken"
-          onerror="this.style.background='radial-gradient(#F05A22,#C8102E)';this.removeAttribute('src')">
+  <!-- S1: HERO -->
+  <section class="hero noise">
+    <div class="hero-watermark">POPEYES</div>
+    <div class="hero-left">
+      <p class="hero-label">Louisiana Style &nbsp;•&nbsp; Since 1972</p>
+      <h1 class="hero-hl">CRISPY.<br>SPICY.<br>LEGENDARY.</h1>
+      <p class="hero-body">Bold, Louisiana-seasoned chicken fried to golden perfection. Every bite tells a story that started in New Orleans.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-orange" onclick="go('menu')">Order Now</button>
+        <button class="btn btn-white-outline" onclick="go('menu')">View Menu</button>
       </div>
     </div>
-
-    <!-- CTAs -->
-    <div class="hero-ctas">
-      <button class="btn btn-lg" style="background:#FFD84D;color:#1A1A1A;font-weight:800;" onclick="go('menu')">Order Now</button>
-      <button class="btn btn-outline btn-lg">Find a Location</button>
-    </div>
-
-    <!-- wave -->
-    <div class="hero-wave">
-      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#ffffff"/>
-      </svg>
+    <div class="hero-right">
+      <img class="hero-img"
+        src="https://images.unsplash.com/photo-1562967914-608f82629710?w=900&fit=crop&q=80"
+        alt="Popeyes Fried Chicken"
+        onerror="this.style.cssText='height:110%;width:50vw;object-fit:cover;position:absolute;top:-30px;right:-30px;background:#2a1208';this.removeAttribute('src')">
     </div>
   </section>
 
-  <!-- Category Chips -->
-  <div class="chips-bar">
-    <div class="chips-inner">
-      <button class="chip active">🍗 Chicken</button>
-      <button class="chip">🥪 Sandwiches</button>
-      <button class="chip">🍤 Tenders</button>
-      <button class="chip">🍟 Sides</button>
-      <button class="chip">🥡 Combos</button>
-      <button class="chip">🥤 Drinks</button>
+  <!-- S2: CATEGORY STRIP -->
+  <div class="cat-strip">
+    <div class="cat-strip-inner">
+      <h2 class="cat-title">WHAT ARE YOU CRAVING?</h2>
+      <div class="cat-scroll">
+        <div class="cat-card active"><span class="cat-icon">🍗</span>Chicken</div>
+        <div class="cat-card"><span class="cat-icon">🥪</span>Sandwiches</div>
+        <div class="cat-card"><span class="cat-icon">🍤</span>Tenders</div>
+        <div class="cat-card"><span class="cat-icon">🥡</span>Combos</div>
+        <div class="cat-card"><span class="cat-icon">🍟</span>Sides</div>
+        <div class="cat-card"><span class="cat-icon">🥤</span>Drinks</div>
+        <div class="cat-card"><span class="cat-icon">🍮</span>Desserts</div>
+      </div>
     </div>
   </div>
 
-  <!-- Featured Items -->
+  <!-- S3: FEATURED ITEMS -->
   <section class="featured">
-    <div class="section-header">
-      <span class="section-tag">Fan Favorites</span>
-      <h2 class="section-title">Featured Items</h2>
-      <p class="section-sub">The classics that started it all. Louisiana bold since 1972.</p>
-    </div>
-    <div class="cards-grid">
-      <div class="food-card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=600&fit=crop&q=80" alt="Spicy Chicken Sandwich" onerror="this.style.cssText='height:220px;background:#F05A22';this.removeAttribute('src')">
-        <div class="card-body">
-          <h3 class="card-name">Spicy Chicken Sandwich</h3>
-          <p class="card-desc">Crispy buttermilk chicken on a brioche bun with barrel-cured pickles and bold spicy mayo.</p>
-          <div class="card-foot">
-            <span class="card-price">$5.49</span>
-            <button class="btn btn-red" style="font-size:.78rem;padding:.48rem 1.1rem;">+ Add to Cart</button>
+    <div class="featured-inner">
+      <div class="feat-heading-wrap">
+        <div class="feat-heading-bar"></div>
+        <h2 class="feat-heading">THE CLASSICS</h2>
+      </div>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-img-wrap">
+            <img class="feat-img" src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=600&fit=crop&q=80" alt="Spicy Chicken Sandwich" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+          </div>
+          <div class="feat-body">
+            <h3 class="feat-name">Spicy Chicken Sandwich</h3>
+            <p class="feat-desc">Crispy buttermilk chicken on a brioche bun with barrel-cured pickles and bold spicy mayo.</p>
+            <div class="feat-foot">
+              <span class="feat-price">$5.49</span>
+            </div>
+            <button class="feat-btn">Add to Order</button>
           </div>
         </div>
-      </div>
-      <div class="food-card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=600&fit=crop&q=80" alt="Classic Chicken" onerror="this.style.cssText='height:220px;background:#C8102E';this.removeAttribute('src')">
-        <div class="card-body">
-          <h3 class="card-name">3 Piece Classic Chicken</h3>
-          <p class="card-desc">Signature bone-in chicken seasoned with our bold Louisiana blend and fried to golden perfection.</p>
-          <div class="card-foot">
-            <span class="card-price">$7.99</span>
-            <button class="btn btn-red" style="font-size:.78rem;padding:.48rem 1.1rem;">+ Add to Cart</button>
+        <div class="feat-card">
+          <div class="feat-img-wrap">
+            <img class="feat-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=600&fit=crop&q=80" alt="3 Piece Classic" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
+          </div>
+          <div class="feat-body">
+            <h3 class="feat-name">3 Piece Classic Chicken</h3>
+            <p class="feat-desc">Signature bone-in chicken seasoned with our bold Louisiana blend, fried to golden perfection.</p>
+            <div class="feat-foot">
+              <span class="feat-price">$7.99</span>
+            </div>
+            <button class="feat-btn">Add to Order</button>
           </div>
         </div>
-      </div>
-      <div class="food-card">
-        <img class="card-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&fit=crop&q=80" alt="Cajun Fries" onerror="this.style.cssText='height:220px;background:#1A1A1A';this.removeAttribute('src')">
-        <div class="card-body">
-          <h3 class="card-name">Cajun Fries</h3>
-          <p class="card-desc">Golden, crispy fries dusted with our signature Cajun seasoning blend. Hot and bold every time.</p>
-          <div class="card-foot">
-            <span class="card-price">$2.99</span>
-            <button class="btn btn-red" style="font-size:.78rem;padding:.48rem 1.1rem;">+ Add to Cart</button>
+        <div class="feat-card">
+          <div class="feat-img-wrap">
+            <img class="feat-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&fit=crop&q=80" alt="Cajun Fries" onerror="this.style.background='#1A1A1A';this.removeAttribute('src')">
+          </div>
+          <div class="feat-body">
+            <h3 class="feat-name">Cajun Fries</h3>
+            <p class="feat-desc">Golden crispy fries dusted in our signature Cajun seasoning blend. Bold in every bite.</p>
+            <div class="feat-foot">
+              <span class="feat-price">$2.99</span>
+            </div>
+            <button class="feat-btn">Add to Order</button>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Promo Banner -->
-  <section class="promo grain" style="position:relative;">
-    <div class="promo-inner">
-      <div class="promo-text">
-        <p class="promo-eye">Limited Time Offer</p>
-        <h2 class="promo-hl">2 Can Dine<br>For $12.99</h2>
-        <p class="promo-body">Two 2-piece chicken meals with your choice of sides and fountain drinks. Share the bold. Valid at participating locations.</p>
-        <button class="btn btn-red btn-lg">Order the Deal</button>
-      </div>
-      <div class="promo-img-wrap">
-        <img class="promo-img" src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=600&fit=crop&q=80" alt="Combo Meal" onerror="this.style.cssText='height:280px;max-width:360px;border-radius:16px;background:rgba(0,0,0,.2)';this.removeAttribute('src')">
       </div>
     </div>
   </section>
 
-  <!-- App Section -->
+  <!-- S4: PROMO BANNER -->
+  <section class="promo noise">
+    <div class="promo-watermark">HOT</div>
+    <div class="promo-left">
+      <p class="promo-label">Limited Time Offer</p>
+      <h2 class="promo-hl">SPICY CHICKEN<br>SANDWICH</h2>
+      <p class="promo-body">Our legendary sandwich is back and hotter than ever. Crispy, juicy, stacked on a buttered brioche. Try it before it's gone.</p>
+      <button class="btn btn-orange" onclick="go('menu')">Order Now</button>
+    </div>
+    <div class="promo-right">
+      <img class="promo-img"
+        src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700&fit=crop&q=80"
+        alt="Spicy Chicken Sandwich"
+        onerror="this.style.cssText='position:absolute;top:-40px;left:0;height:calc(100% + 40px);width:100%;object-fit:cover;background:#a00020;z-index:2';this.removeAttribute('src')">
+    </div>
+  </section>
+
+  <!-- S5: WHY POPEYES -->
+  <section class="why">
+    <div class="why-inner">
+      <div class="why-col">
+        <div class="why-num">01</div>
+        <h3 class="why-title">Louisiana Heritage</h3>
+        <p class="why-desc">Born in New Orleans in 1972, our recipes carry the bold, soulful spirit of Louisiana cooking in every bite.</p>
+      </div>
+      <div class="why-col">
+        <div class="why-num">02</div>
+        <h3 class="why-title">Bold Flavors</h3>
+        <p class="why-desc">Our signature spice blend is marinated for 12 hours minimum. You can taste the difference in every single piece.</p>
+      </div>
+      <div class="why-col">
+        <div class="why-num">03</div>
+        <h3 class="why-title">Fresh Never Frozen</h3>
+        <p class="why-desc">We hand-bread every piece fresh in our kitchens. No shortcuts. No freezer shortcuts. Just real, honest chicken.</p>
+      </div>
+      <div class="why-col">
+        <div class="why-num">04</div>
+        <h3 class="why-title">Made to Order</h3>
+        <p class="why-desc">Every order is prepared when you place it. Hot, fresh, and exactly the way Louisiana intended it to taste.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6: APP DOWNLOAD -->
   <section class="app-sec">
     <div class="app-inner">
       <div class="app-text">
-        <span class="section-tag">Download Today</span>
-        <h2 class="app-hl">Order Faster.<br>Earn Rewards.</h2>
-        <p class="app-copy">Skip the line and earn points on every order with the Popeyes app. Exclusive deals, easy reorders, and rewards only app members get.</p>
-        <div class="store-btns">
-          <a class="store-btn">
-            <span class="store-ico">🍎</span>
-            <span><span class="store-lbl">Download on the</span><span class="store-name">App Store</span></span>
-          </a>
-          <a class="store-btn">
-            <span class="store-ico" style="font-size:1.5rem;">▶</span>
-            <span><span class="store-lbl">Get it on</span><span class="store-name">Google Play</span></span>
-          </a>
+        <h2 class="app-hl">Order from anywhere.</h2>
+        <p class="app-body">Skip the line, earn rewards, and get exclusive deals only app members get. Download the Popeyes app and never miss a drop of bold flavor.</p>
+        <div class="app-btns">
+          <button class="btn btn-pill"><span style="margin-right:6px;">🍎</span> App Store</button>
+          <button class="btn btn-pill"><span style="margin-right:6px;">▶</span> Google Play</button>
         </div>
       </div>
-      <div class="phone-wrap">
-        <div class="phone">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="phone-brand">POPEYES</div>
-            <div class="ph-card-tall">
-              <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=300&fit=crop&q=80" alt="" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
-            </div>
-            <div class="ph-card ph-card-sm"></div>
-            <div class="ph-card ph-card-sm"></div>
-            <div class="ph-card ph-card-sm"></div>
+      <div class="app-right">
+        <div class="app-circle"></div>
+        <div class="app-phone">
+          <div class="app-phone-screen">
+            <div class="app-phone-logo">POPEYES</div>
+            <img class="app-phone-img"
+              src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=300&fit=crop&q=80"
+              alt="" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+            <div class="app-phone-card"></div>
+            <div class="app-phone-card"></div>
+            <div class="app-phone-card"></div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer (Home) -->
-  <footer>
+  <!-- FOOTER -->
+  <footer class="footer">
     <div class="footer-inner">
       <div class="footer-top">
-        <div class="footer-brand">
-          <a class="nav-logo" onclick="go('home')">POPE<span>YES</span></a>
-          <p>Bold, crispy, Louisiana-inspired chicken done right. Serving up flavor and community since 1972.</p>
-          <div class="socials">
-            <a class="soc" title="Twitter">𝕏</a>
-            <a class="soc" title="Facebook">f</a>
-            <a class="soc" title="Instagram">📷</a>
-            <a class="soc" title="YouTube">▶</a>
-          </div>
-        </div>
         <div class="footer-col">
           <h4>Menu</h4>
           <ul>
-            <li><a href="#">Chicken</a></li><li><a href="#">Sandwiches</a></li>
-            <li><a href="#">Tenders</a></li><li><a href="#">Sides</a></li>
-            <li><a href="#">Combos</a></li><li><a href="#">Desserts</a></li>
+            <li><a href="#">Chicken</a></li>
+            <li><a href="#">Sandwiches</a></li>
+            <li><a href="#">Tenders</a></li>
+            <li><a href="#">Combos</a></li>
+            <li><a href="#">Sides</a></li>
+            <li><a href="#">Desserts</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="#">About Us</a></li><li><a href="#">Careers</a></li>
-            <li><a href="#">Franchising</a></li><li><a href="#">Newsroom</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Franchising</a></li>
+            <li><a href="#">Newsroom</a></li>
             <li><a href="#">Investors</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Visit</h4>
+          <h4>Visit Us</h4>
           <ul>
-            <li><a href="#">Find a Location</a></li><li><a href="#">Catering</a></li>
-            <li><a href="#">Delivery</a></li><li><a href="#">Gift Cards</a></li>
+            <li><a href="#">Find a Location</a></li>
+            <li><a href="#">Catering</a></li>
+            <li><a href="#">Delivery</a></li>
+            <li><a href="#">Gift Cards</a></li>
+            <li><a href="#">Nutrition Info</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Support</h4>
+          <h4>Connect</h4>
           <ul>
-            <li><a href="#">FAQs</a></li><li><a href="#">Contact Us</a></li>
-            <li><a href="#">Nutrition Info</a></li><li><a href="#">Allergen Guide</a></li>
-            <li><a href="#">Accessibility</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Twitter / X</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">TikTok</a></li>
+            <li><a href="#">Contact Us</a></li>
           </ul>
         </div>
       </div>
+      <hr class="footer-div">
       <div class="footer-bot">
-        <span>© 2025 Popeyes Louisiana Kitchen. All rights reserved.</span>
-        <span><a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a> · <a href="#">Cookie Settings</a></span>
+        <a class="footer-bot-logo">POPE<span>YES</span></a>
+        <p class="footer-copy">© 2025 Popeyes Louisiana Kitchen. All rights reserved.</p>
+        <div class="footer-socials">
+          <button class="soc-btn">F</button>
+          <button class="soc-btn">IG</button>
+          <button class="soc-btn">TW</button>
+          <button class="soc-btn">TK</button>
+        </div>
       </div>
     </div>
   </footer>
-</div>
 
-<!-- ══════════════════════════════════
+</div><!-- /homePage -->
+
+
+<!-- ══════════════════════════════
      MENU PAGE
-══════════════════════════════════ -->
+══════════════════════════════ -->
 <div id="menuPage" class="page">
 
-  <!-- Menu Hero -->
-  <section class="menu-hero grain" style="position:relative;">
+  <!-- MENU HERO -->
+  <section class="menu-hero noise">
+    <div class="menu-hero-wm">MENU</div>
     <div class="menu-hero-content">
-      <h1 class="menu-hl">Our Menu</h1>
-      <div class="orange-bar"></div>
-      <p class="menu-sub">From our legendary fried chicken to Southern sides and everything in between — made fresh, always bold.</p>
+      <p class="menu-hero-label">What We're Serving</p>
+      <h1 class="menu-hero-hl">THE FULL MENU</h1>
+      <div class="menu-hero-line"></div>
     </div>
   </section>
 
-  <!-- Filter Tabs -->
-  <div class="filter-bar">
+  <!-- FILTER TABS -->
+  <div class="filter-bar" id="filterBar">
     <div class="filter-inner">
       <button class="ftab active" data-f="all">All</button>
       <button class="ftab" data-f="chicken">Chicken</button>
       <button class="ftab" data-f="sandwiches">Sandwiches</button>
       <button class="ftab" data-f="tenders">Tenders</button>
-      <button class="ftab" data-f="sides">Sides</button>
       <button class="ftab" data-f="combos">Combos</button>
+      <button class="ftab" data-f="sides">Sides</button>
       <button class="ftab" data-f="drinks">Drinks</button>
       <button class="ftab" data-f="desserts">Desserts</button>
     </div>
   </div>
 
-  <!-- Menu Grid -->
+  <!-- MENU GRID -->
   <div class="menu-grid-wrap">
-    <div class="menu-grid" id="menuGrid">
+    <div class="menu-grid-inner">
+      <div class="menu-grid" id="menuGrid">
 
-      <!-- CHICKEN -->
-      <div class="m-card" data-cat="chicken">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=500&fit=crop&q=80" alt="2 Pc Classic" onerror="this.style.cssText='height:170px;background:#F05A22';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">2 Pc Classic Chicken</h3>
-          <p class="m-card-desc">Bone-in chicken with our bold Louisiana seasoning, fried golden and crispy.</p>
-          <div class="m-card-foot"><span class="m-card-price">$5.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="chicken">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&fit=crop&q=80" alt="3 Pc Spicy" onerror="this.style.cssText='height:170px;background:#C8102E';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">3 Pc Spicy Chicken</h3>
-          <p class="m-card-desc">Our spiciest bone-in chicken — bold heat with authentic Louisiana soul.</p>
-          <div class="m-card-foot"><span class="m-card-price">$7.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="chicken">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=500&fit=crop&q=80&sat=-30" alt="4 Pc Mild" onerror="this.style.cssText='height:170px;background:#e06012';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">4 Pc Mild Chicken</h3>
-          <p class="m-card-desc">Tender, juicy mild chicken pieces with a crispy, seasoned golden coating.</p>
-          <div class="m-card-foot"><span class="m-card-price">$9.49</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="chicken">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=500&fit=crop&q=80&flip=h" alt="8 Pc Family" onerror="this.style.cssText='height:170px;background:#b03010';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">8 Pc Family Chicken</h3>
-          <p class="m-card-desc">Eight pieces of our signature chicken — feed the whole crew Louisiana-style.</p>
-          <div class="m-card-foot"><span class="m-card-price">$19.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-
-      <!-- SANDWICHES -->
-      <div class="m-card" data-cat="sandwiches">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&fit=crop&q=80" alt="Spicy Deluxe" onerror="this.style.cssText='height:170px;background:#F05A22';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Spicy Deluxe Sandwich</h3>
-          <p class="m-card-desc">Crispy spicy chicken on a brioche bun with mayo and barrel-cured pickles.</p>
-          <div class="m-card-foot"><span class="m-card-price">$5.49</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="sandwiches">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=500&fit=crop&q=80" alt="Classic Sandwich" onerror="this.style.cssText='height:170px;background:#C8102E';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Classic Chicken Sandwich</h3>
-          <p class="m-card-desc">The OG that broke the internet. Crispy, juicy, stacked on a brioche bun.</p>
-          <div class="m-card-foot"><span class="m-card-price">$4.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="sandwiches">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&fit=crop&q=80&bri=10" alt="Bacon Rancher" onerror="this.style.cssText='height:170px;background:#1A1A1A';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Bacon Rancher Sandwich</h3>
-          <p class="m-card-desc">Crispy chicken with smoky bacon, ranch dressing, lettuce, and tomato.</p>
-          <div class="m-card-foot"><span class="m-card-price">$6.29</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-
-      <!-- TENDERS -->
-      <div class="m-card" data-cat="tenders">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=500&fit=crop&q=80&sat=20" alt="3 Pc Tenders" onerror="this.style.cssText='height:170px;background:#F05A22';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">3 Pc Tenders</h3>
-          <p class="m-card-desc">Hand-battered chicken tenders seasoned with our signature Louisiana spices.</p>
-          <div class="m-card-foot"><span class="m-card-price">$6.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="tenders">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=500&fit=crop&q=80&sat=40" alt="5 Pc Spicy Tenders" onerror="this.style.cssText='height:170px;background:#C8102E';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">5 Pc Spicy Tenders</h3>
-          <p class="m-card-desc">Five crispy, juicy tenders with the bold heat Louisiana is known for.</p>
-          <div class="m-card-foot"><span class="m-card-price">$10.49</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-
-      <!-- SIDES -->
-      <div class="m-card" data-cat="sides">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&fit=crop&q=80" alt="Cajun Fries" onerror="this.style.cssText='height:170px;background:#F05A22';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Cajun Fries</h3>
-          <p class="m-card-desc">Crispy, bold, and dusted with our signature Cajun seasoning blend. Always hot.</p>
-          <div class="m-card-foot"><span class="m-card-price">$2.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="sides">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&fit=crop&q=80" alt="Red Beans & Rice" onerror="this.style.cssText='height:170px;background:#C8102E';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Red Beans & Rice</h3>
-          <p class="m-card-desc">A Louisiana classic — hearty, flavorful, and slow-simmered to perfection.</p>
-          <div class="m-card-foot"><span class="m-card-price">$2.49</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="sides">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=500&fit=crop&q=80" alt="Mac & Cheese" onerror="this.style.cssText='height:170px;background:#e0a020';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Mac & Cheese</h3>
-          <p class="m-card-desc">Rich, creamy mac made with a blend of real cheeses. Pure Louisiana comfort.</p>
-          <div class="m-card-foot"><span class="m-card-price">$2.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="sides">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf5f?w=500&fit=crop&q=80" alt="Coleslaw" onerror="this.style.cssText='height:170px;background:#888';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Homestyle Coleslaw</h3>
-          <p class="m-card-desc">Cool, creamy slaw — the perfect counterpoint to bold, spicy chicken.</p>
-          <div class="m-card-foot"><span class="m-card-price">$1.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-
-      <!-- COMBOS -->
-      <div class="m-card" data-cat="combos">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&fit=crop&q=80" alt="2 Pc Combo" onerror="this.style.cssText='height:170px;background:#C8102E';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">2 Pc Chicken Combo</h3>
-          <p class="m-card-desc">Two pieces of signature chicken with your choice of side and a medium drink.</p>
-          <div class="m-card-foot"><span class="m-card-price">$9.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="combos">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&fit=crop&q=80&sat=30" alt="Tenders Combo" onerror="this.style.cssText='height:170px;background:#F05A22';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">3 Pc Tenders Combo</h3>
-          <p class="m-card-desc">Three hand-battered tenders with Cajun fries and a fountain drink.</p>
-          <div class="m-card-foot"><span class="m-card-price">$10.49</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="combos">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&fit=crop&q=80&bri=15" alt="Family Feast" onerror="this.style.cssText='height:170px;background:#a00020';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Family Feast</h3>
-          <p class="m-card-desc">8 pieces of signature chicken, two large sides, and 4 buttery biscuits.</p>
-          <div class="m-card-foot"><span class="m-card-price">$24.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-
-      <!-- DRINKS -->
-      <div class="m-card" data-cat="drinks">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1559181567-c3190bfbf716?w=500&fit=crop&q=80" alt="Strawberry Lemonade" onerror="this.style.cssText='height:170px;background:#F05A22';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Strawberry Lemonade</h3>
-          <p class="m-card-desc">Fresh-squeezed lemonade swirled with sweet strawberry. Refreshingly bold.</p>
-          <div class="m-card-foot"><span class="m-card-price">$2.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="drinks">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&fit=crop&q=80" alt="Sweet Tea" onerror="this.style.cssText='height:170px;background:#402010';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Southern Sweet Tea</h3>
-          <p class="m-card-desc">Real brewed sweet tea — classic Louisiana refreshment, served ice cold.</p>
-          <div class="m-card-foot"><span class="m-card-price">$1.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="drinks">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=500&fit=crop&q=80" alt="Fountain Drink" onerror="this.style.cssText='height:170px;background:#C8102E';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Fountain Drink</h3>
-          <p class="m-card-desc">Your choice of Coca-Cola products — Sm, Med, Lg, or XL.</p>
-          <div class="m-card-foot"><span class="m-card-price">$1.49</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-
-      <!-- DESSERTS -->
-      <div class="m-card" data-cat="desserts">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1568051243851-f9b136146e97?w=500&fit=crop&q=80" alt="Apple Pie" onerror="this.style.cssText='height:170px;background:#c07010';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Cinnamon Apple Pie</h3>
-          <p class="m-card-desc">Warm, flaky crust filled with cinnamon-spiced apple filling. Southern sweet.</p>
-          <div class="m-card-foot"><span class="m-card-price">$1.49</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-      <div class="m-card" data-cat="desserts">
-        <img class="m-card-img" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&fit=crop&q=80" alt="Chocolate Cake" onerror="this.style.cssText='height:170px;background:#1A1A1A';this.removeAttribute('src')">
-        <div class="m-card-body">
-          <h3 class="m-card-name">Chocolate Biscuit Cake</h3>
-          <p class="m-card-desc">Rich chocolate cake on a flaky biscuit base. A Louisiana treat done right.</p>
-          <div class="m-card-foot"><span class="m-card-price">$1.99</span><button class="btn btn-red" style="font-size:.76rem;padding:.42rem .95rem;">+ Add</button></div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Mid Banner -->
-  <div class="mid-banner">
-    <div class="mid-banner-content">
-      <h2 class="mid-banner-hl">Hungry for More?<br>Build Your Combo.</h2>
-      <p class="mid-banner-sub">Pick your chicken, choose a side, add a drink — custom combos that are always a deal.</p>
-      <button class="btn btn-red btn-lg">Build a Combo</button>
-    </div>
-  </div>
-
-  <!-- Footer (Menu) -->
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a class="nav-logo" onclick="go('home')">POPE<span>YES</span></a>
-          <p>Bold, crispy, Louisiana-inspired chicken done right. Serving up flavor and community since 1972.</p>
-          <div class="socials">
-            <a class="soc" title="Twitter">𝕏</a>
-            <a class="soc" title="Facebook">f</a>
-            <a class="soc" title="Instagram">📷</a>
-            <a class="soc" title="YouTube">▶</a>
+        <!-- CHICKEN -->
+        <div class="m-card" data-category="chicken">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=500&fit=crop&q=80" alt="Classic Chicken" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Classic Chicken</h3>
+            <p class="m-card-desc">Bone-in chicken with our bold Louisiana seasoning, fried golden and crispy.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$5.99</span><span class="m-tag">POPULAR</span></div>
+            <button class="m-card-btn">Add to Order</button>
           </div>
         </div>
+
+        <!-- SANDWICHES -->
+        <div class="m-card" data-category="sandwiches">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=500&fit=crop&q=80" alt="Chicken Sandwich" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Chicken Sandwich</h3>
+            <p class="m-card-desc">The original that broke the internet. Crispy chicken on brioche with pickles.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$4.99</span><span class="m-tag">POPULAR</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <!-- TENDERS -->
+        <div class="m-card" data-category="tenders">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=500&fit=crop&q=80&sat=20" alt="Spicy Tenders" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Spicy Tenders</h3>
+            <p class="m-card-desc">Hand-battered tenders with bold Louisiana heat. Available in 3 or 5 piece.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$6.99</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <!-- SIDES -->
+        <div class="m-card" data-category="sides">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&fit=crop&q=80" alt="Red Beans and Rice" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Red Beans & Rice</h3>
+            <p class="m-card-desc">A Louisiana staple — slow-simmered red beans with bold Cajun spice over fluffy rice.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$2.49</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <div class="m-card" data-category="sides">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf5f?w=500&fit=crop&q=80" alt="Mashed Potatoes" onerror="this.style.background='#888';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Mashed Potatoes</h3>
+            <p class="m-card-desc">Creamy Southern-style mashed potatoes smothered in savory Cajun gravy.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$2.49</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <div class="m-card" data-category="sides">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&fit=crop&q=80" alt="Cajun Fries" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Cajun Fries</h3>
+            <p class="m-card-desc">Golden crispy fries dusted with our signature Cajun seasoning. Always bold.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$2.99</span><span class="m-tag">POPULAR</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <div class="m-card" data-category="sides">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=500&fit=crop&q=80" alt="Biscuit" onerror="this.style.background='#c08030';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Biscuit</h3>
+            <p class="m-card-desc">Warm, fluffy, buttery biscuits baked fresh throughout the day. A Southern classic.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$1.29</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <!-- DRINKS -->
+        <div class="m-card" data-category="drinks">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1559181567-c3190bfbf716?w=500&fit=crop&q=80" alt="Lemonade" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Lemonade</h3>
+            <p class="m-card-desc">Freshly made lemonade — tangy, cold, and refreshingly bold. Just like Louisiana.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$2.49</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <div class="m-card" data-category="drinks">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=500&fit=crop&q=80" alt="Strawberry Lemonade" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Strawberry Lemonade</h3>
+            <p class="m-card-desc">Fresh-squeezed lemonade swirled with sweet Louisiana strawberry. Ice cold perfection.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$2.99</span><span class="m-tag">POPULAR</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <!-- COMBOS -->
+        <div class="m-card" data-category="combos">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&fit=crop&q=80" alt="Chicken Combo" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Chicken Combo</h3>
+            <p class="m-card-desc">Two pieces of signature chicken with your choice of side and a medium fountain drink.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$9.99</span><span class="m-tag">POPULAR</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <div class="m-card" data-category="combos">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&fit=crop&q=80&sat=30" alt="3 Piece Tenders Combo" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">3 Pc Tenders Combo</h3>
+            <p class="m-card-desc">Three hand-battered tenders, Cajun fries, and a fountain drink. The full package.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$10.49</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+        <!-- DESSERTS -->
+        <div class="m-card" data-category="desserts">
+          <img class="m-card-img" src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&fit=crop&q=80" alt="Banana Pudding" onerror="this.style.background='#c0a050';this.removeAttribute('src')">
+          <div class="m-card-body">
+            <h3 class="m-card-name">Banana Pudding</h3>
+            <p class="m-card-desc">Creamy banana pudding layered with vanilla wafers. A real Southern comfort dessert.</p>
+            <div class="m-card-price-row"><span class="m-card-price">$2.49</span><span class="m-tag">NEW</span></div>
+            <button class="m-card-btn">Add to Order</button>
+          </div>
+        </div>
+
+      </div><!-- /menu-grid -->
+    </div>
+  </div>
+
+  <!-- MID BANNER -->
+  <div class="menu-mid noise">
+    <div class="menu-mid-wm">COMBO</div>
+    <div class="menu-mid-left">
+      <h2 class="menu-mid-hl">BUILD YOUR<br>COMBO.</h2>
+      <p class="menu-mid-body">Pick your chicken, choose a side, add a drink — fully custom combos that are always a deal. Make it yours.</p>
+      <button class="btn btn-red-outline">Build a Combo</button>
+    </div>
+    <div class="menu-mid-right">
+      <img class="menu-mid-img"
+        src="https://images.unsplash.com/photo-1562967914-608f82629710?w=700&fit=crop&q=80"
+        alt="Combo"
+        onerror="this.style.cssText='position:absolute;top:-40px;left:0;height:calc(100%+40px);width:100%;object-fit:cover;background:#d04010;z-index:2';this.removeAttribute('src')">
+    </div>
+  </div>
+
+  <!-- FOOTER (MENU) -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
         <div class="footer-col">
           <h4>Menu</h4>
           <ul>
-            <li><a href="#">Chicken</a></li><li><a href="#">Sandwiches</a></li>
-            <li><a href="#">Tenders</a></li><li><a href="#">Sides</a></li>
-            <li><a href="#">Combos</a></li><li><a href="#">Desserts</a></li>
+            <li><a href="#">Chicken</a></li>
+            <li><a href="#">Sandwiches</a></li>
+            <li><a href="#">Tenders</a></li>
+            <li><a href="#">Combos</a></li>
+            <li><a href="#">Sides</a></li>
+            <li><a href="#">Desserts</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Company</h4>
           <ul>
-            <li><a href="#">About Us</a></li><li><a href="#">Careers</a></li>
-            <li><a href="#">Franchising</a></li><li><a href="#">Newsroom</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Franchising</a></li>
+            <li><a href="#">Newsroom</a></li>
             <li><a href="#">Investors</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Visit</h4>
+          <h4>Visit Us</h4>
           <ul>
-            <li><a href="#">Find a Location</a></li><li><a href="#">Catering</a></li>
-            <li><a href="#">Delivery</a></li><li><a href="#">Gift Cards</a></li>
+            <li><a href="#">Find a Location</a></li>
+            <li><a href="#">Catering</a></li>
+            <li><a href="#">Delivery</a></li>
+            <li><a href="#">Gift Cards</a></li>
+            <li><a href="#">Nutrition Info</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Support</h4>
+          <h4>Connect</h4>
           <ul>
-            <li><a href="#">FAQs</a></li><li><a href="#">Contact Us</a></li>
-            <li><a href="#">Nutrition Info</a></li><li><a href="#">Allergen Guide</a></li>
-            <li><a href="#">Accessibility</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Twitter / X</a></li>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">TikTok</a></li>
+            <li><a href="#">Contact Us</a></li>
           </ul>
         </div>
       </div>
+      <hr class="footer-div">
       <div class="footer-bot">
-        <span>© 2025 Popeyes Louisiana Kitchen. All rights reserved.</span>
-        <span><a href="#">Privacy Policy</a> · <a href="#">Terms of Use</a> · <a href="#">Cookie Settings</a></span>
+        <a class="footer-bot-logo">POPE<span>YES</span></a>
+        <p class="footer-copy">© 2025 Popeyes Louisiana Kitchen. All rights reserved.</p>
+        <div class="footer-socials">
+          <button class="soc-btn">F</button>
+          <button class="soc-btn">IG</button>
+          <button class="soc-btn">TW</button>
+          <button class="soc-btn">TK</button>
+        </div>
       </div>
     </div>
   </footer>
@@ -936,16 +1220,20 @@ function go(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── NAVBAR SHRINK ──
-const navbar = document.getElementById('navbar');
+// ── NAVBAR SCROLL ──
 window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 50);
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
-// ── HOME CHIPS ──
-document.querySelectorAll('.chip').forEach(c => {
-  c.addEventListener('click', function () {
-    document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+// ── MOBILE NAV ──
+function toggleMob() {
+  document.getElementById('mobNav').classList.toggle('open');
+}
+
+// ── HOME CATEGORY CARDS ──
+document.querySelectorAll('.cat-card').forEach(card => {
+  card.addEventListener('click', function () {
+    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
     this.classList.add('active');
   });
 });
@@ -960,29 +1248,28 @@ ftabs.forEach(tab => {
     this.classList.add('active');
     const f = this.dataset.f;
     mcards.forEach(card => {
-      card.classList.toggle('hide', f !== 'all' && card.dataset.cat !== f);
+      if (f === 'all' || card.dataset.category === f) {
+        card.style.display = 'block';
+        requestAnimationFrame(() => { card.style.opacity = '1'; card.style.transform = ''; });
+      } else {
+        card.style.opacity = '0';
+        setTimeout(() => { card.style.display = 'none'; }, 200);
+      }
     });
   });
 });
 
-// ── MOBILE NAV ──
-function toggleMob() {
-  document.getElementById('mobNav').classList.toggle('open');
-}
-
-// ── ADD TO CART FEEDBACK ──
-document.querySelectorAll('.btn-red').forEach(btn => {
-  if (btn.textContent.includes('Add')) {
-    btn.addEventListener('click', function () {
-      const orig = this.textContent;
-      this.textContent = '✓ Added!';
-      this.style.background = '#2a9e50';
-      setTimeout(() => {
-        this.textContent = orig;
-        this.style.background = '';
-      }, 1400);
-    });
-  }
+// ── ADD TO ORDER FEEDBACK ──
+document.querySelectorAll('.feat-btn, .m-card-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    const orig = this.textContent;
+    this.textContent = '✓ Added!';
+    this.style.background = '#1e7e40';
+    setTimeout(() => {
+      this.textContent = orig;
+      this.style.background = '';
+    }, 1400);
+  });
 });
 </script>
 </body>
