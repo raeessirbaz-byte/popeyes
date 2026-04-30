@@ -90,7 +90,7 @@ export default function LocationsSection() {
 
   return (
     <section id="locations" className="py-24 md:py-32 bg-[#f2f0eb] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         {/* Header */}
         <div ref={headRef} className="text-center mb-14">
           <motion.div
@@ -99,7 +99,7 @@ export default function LocationsSection() {
             transition={{ duration: 0.5 }}
             className="mb-2"
           >
-            <span className="text-[#3d8b0a] text-[9rem] md:text-[13.5rem] font-black uppercase tracking-tight leading-none">
+            <span className="text-[#3d8b0a] text-[4rem] sm:text-[6rem] md:text-[9rem] lg:text-[13.5rem] font-black uppercase tracking-tight leading-none">
               Locations
             </span>
           </motion.div>
@@ -107,7 +107,7 @@ export default function LocationsSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.55, delay: 0.1 }}
-            className="text-4xl md:text-6xl font-black uppercase text-[rgba(0,0,0,0.87)] leading-tight mb-5"
+            className="text-3xl sm:text-4xl md:text-6xl font-black uppercase text-[rgba(0,0,0,0.87)] leading-tight mb-5"
           >
             Find Your
             <br />
@@ -149,7 +149,7 @@ export default function LocationsSection() {
         </motion.div>
 
         {/* Featured locations */}
-        <div className="grid md:grid-cols-3 gap-5 mb-10">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-5 mb-10">
           {FEATURED_LOCATIONS.map((loc, i) => (
             <LocationCard key={loc.id} loc={loc} index={i} />
           ))}

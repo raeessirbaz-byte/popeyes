@@ -185,7 +185,7 @@ export default function MenuPageContent() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="text-5xl md:text-7xl font-black uppercase text-white tracking-tight"
+            className="text-3xl sm:text-5xl md:text-7xl font-black uppercase text-white tracking-tight"
           >
             {activeCategory}
           </motion.h1>
@@ -217,7 +217,7 @@ export default function MenuPageContent() {
       </div>
 
       {/* Card grid */}
-      <div className="max-w-7xl mx-auto px-6 md:px-8 py-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-14">
         <motion.div
           key={activeCategory}
           initial={{ opacity: 0 }}

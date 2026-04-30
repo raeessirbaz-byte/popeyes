@@ -37,7 +37,7 @@ export default function BrandStory() {
     <section id="story" ref={sectionRef} className="bg-[#1A1A1A] overflow-hidden">
       <div className="grid lg:grid-cols-2">
         {/* Left: Image panel */}
-        <div className="relative h-[65vh] lg:h-auto lg:min-h-[90vh] order-2 lg:order-1">
+        <div className="relative h-[45vh] sm:h-[55vh] lg:h-auto lg:min-h-[90vh] order-2 lg:order-1">
           <motion.div style={{ y: imgY }} className="absolute inset-0">
             {/* Rich dark gradient background simulating restaurant interior */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#0d1f0f] via-[#1a2a1c] to-[#1A1A1A]" />
@@ -60,7 +60,7 @@ export default function BrandStory() {
           </motion.div>
 
           {/* Pull quote */}
-          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10 z-10">
+          <div className="absolute bottom-0 left-0 right-0 p-5 md:p-10 z-10">
             <div className="w-10 h-1 bg-[#3d8b0a] rounded-full mb-4" />
             <blockquote className="text-white text-xl md:text-2xl font-light leading-snug italic mb-3">
               "Stand for something good. That&apos;s not just a tagline — it&apos;s a commitment to the food, the community, and the people who make it all happen."
@@ -89,7 +89,7 @@ export default function BrandStory() {
         {/* Right: Story content */}
         <div
           ref={contentRef}
-          className="flex flex-col justify-center px-8 py-16 lg:py-28 lg:px-14 order-1 lg:order-2"
+          className="flex flex-col justify-center px-5 sm:px-8 py-12 sm:py-16 lg:py-28 lg:px-14 order-1 lg:order-2"
         >
           <motion.div
             initial={{ opacity: 0, x: 30 }}
@@ -101,7 +101,7 @@ export default function BrandStory() {
               The Shack Story
             </span>
 
-            <h2 className="text-4xl md:text-5xl font-black uppercase text-white leading-[0.95] mb-7">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase text-white leading-[0.95] mb-7">
               Born in a
               <br />
               hot dog cart.

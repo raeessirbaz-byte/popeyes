@@ -61,7 +61,7 @@ export const ExpandingCards = React.forwardRef<
       className={cn(
         "w-full max-w-6xl gap-2",
         "grid",
-        "h-[600px] md:h-[500px]",
+        "h-[65vh] min-h-[420px] md:h-[500px]",
         "transition-[grid-template-columns,grid-template-rows] duration-500 ease-out",
         className,
       )}
@@ -96,7 +96,7 @@ export const ExpandingCards = React.forwardRef<
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
           <article className="absolute inset-0 flex flex-col justify-end gap-2 p-5">
-            <h3 className="hidden origin-left rotate-90 text-sm font-bold uppercase tracking-widest text-white/70 opacity-100 transition-all duration-300 ease-out md:block group-data-[active=true]:opacity-0">
+            <h3 className="block origin-left md:rotate-90 text-sm font-bold uppercase tracking-widest text-white/70 opacity-100 transition-all duration-300 ease-out group-data-[active=true]:opacity-0">
               {item.title}
             </h3>
 

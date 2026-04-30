@@ -38,7 +38,7 @@ export default function Nav() {
         }`}
         style={scrolled ? { boxShadow: "0 1px 3px rgba(0,0,0,0.10), 0 2px 2px rgba(0,0,0,0.06), 0 0 2px rgba(0,0,0,0.07)" } : {}}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-8 h-16 md:h-18 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 group">
             <div className="w-9 h-9 rounded-full bg-[#3d8b0a] flex items-center justify-center flex-shrink-0 group-hover:bg-[#2d6a00] transition-colors">
@@ -118,7 +118,7 @@ export default function Nav() {
               exit={{ x: "100%" }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="absolute right-0 top-0 bottom-0 w-72 bg-[#f2f0eb] flex flex-col p-8"
+              className="absolute right-0 top-0 bottom-0 w-72 max-w-[85vw] bg-[#f2f0eb] flex flex-col p-6 sm:p-8"
               style={{ boxShadow: "0 0 6px rgba(0,0,0,0.24), 0 8px 12px rgba(0,0,0,0.14)" }}
             >
               <div className="flex items-center justify-between mb-10">

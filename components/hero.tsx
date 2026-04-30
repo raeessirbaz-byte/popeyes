@@ -57,7 +57,7 @@ export default function Hero() {
       {/* Main content */}
       <motion.div
         style={{ y: textY, opacity }}
-        className="relative z-10 max-w-7xl mx-auto px-8 md:px-12 w-full pt-28 pb-20"
+        className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 md:px-12 w-full pt-24 pb-20"
       >
         <div className="max-w-3xl">
           {/* Eyebrow */}
@@ -78,7 +78,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="text-[clamp(52px,8.5vw,100px)] font-black uppercase leading-[0.88] tracking-tight text-white"
+            className="text-[clamp(40px,8.5vw,100px)] font-black uppercase leading-[0.88] tracking-tight text-white"
           >
             Stand for
             <br />
