@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+:root {
+  /* Brand colors — Shake Shack adapted from Starbucks four-tier system */
+  --ss-accent:      #3d8b0a;   /* Primary CTA (Green Accent equivalent) */
+  --ss-accent-dark: #2d6a00;   /* Hover state */
+  --ss-brand:       #C8890A;   /* Brand heading accent (Starbucks Green equivalent) */
+  --ss-band:        #1A1A1A;   /* Feature band / footer (House Green equivalent) */
+  --ss-band-2:      #242424;   /* Secondary dark surface */
+  --ss-red:         #E8291C;   /* Destructive / bold accent */
+
+  /* Canvas — warm cream (not pure white — references café materials) */
+  --ss-canvas:      #f2f0eb;   /* Neutral Warm — primary page surface */
+  --ss-ceramic:     #edebe9;   /* Ceramic — zone separators, section washes */
+  --ss-white:       #ffffff;   /* Card canvas */
+
+  /* Text */
+  --ss-text:        rgba(0, 0, 0, 0.87);   /* Primary heading/body on light */
+  --ss-text-soft:   rgba(0, 0, 0, 0.55);   /* Secondary/metadata on light */
+  --ss-text-white:  rgba(255, 255, 255, 1);
+  --ss-text-white-soft: rgba(255, 255, 255, 0.70);
+
+  /* Borders */
+  --ss-border:      #ddd9d2;
+
+  /* Elevation — whisper-soft layered shadows (never a single heavy drop) */
+  --shadow-card:    0 0 0.5px rgba(0,0,0,0.14), 0 1px 1px rgba(0,0,0,0.24);
+  --shadow-nav:     0 1px 3px rgba(0,0,0,0.10), 0 2px 2px rgba(0,0,0,0.06), 0 0 2px rgba(0,0,0,0.07);
+  --shadow-frap:    0 0 6px rgba(0,0,0,0.24), 0 8px 12px rgba(0,0,0,0.14);
+  --shadow-lg:      0 4px 16px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.08);
+
+  /* Radius */
+  --radius-card:    12px;
+  --radius-pill:    50px;
+
+  /* Typography */
+  --tracking-tight: -0.01em;
+  --tracking-loose: 0.10em;
+
+  /* Spacing (anchored at 1.6rem = 16px) */
+  --space-3: 1.6rem;
+  --space-4: 2.4rem;
+  --space-5: 3.2rem;
+  --space-6: 4.0rem;
+  --space-7: 4.8rem;
+  --space-8: 5.6rem;
+  --space-9: 6.4rem;
+}
+
+@theme inline {
+  --color-ss-accent:       var(--ss-accent);
+  --color-ss-accent-dark:  var(--ss-accent-dark);
+  --color-ss-brand:        var(--ss-brand);
+  --color-ss-band:         var(--ss-band);
+  --color-ss-canvas:       var(--ss-canvas);
+  --color-ss-ceramic:      var(--ss-ceramic);
+  --color-ss-red:          var(--ss-red);
+  --color-ss-border:       var(--ss-border);
+  --font-sans:             var(--font-barlow);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-barlow), 'Helvetica Neue', Arial, sans-serif;
+  background: var(--ss-canvas);
+  color: var(--ss-text);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: var(--tracking-tight);
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ss-ceramic); }
+::-webkit-scrollbar-thumb { background: var(--ss-accent); border-radius: 3px; }
+::selection { background: var(--ss-accent); color: #fff; }
+
+/* Utility: card elevation */
+.card-shadow {
+  box-shadow: var(--shadow-card);
+}
+
+/* Utility: active scale micro-interaction (universal button press) */
+.btn-active:active {
+  transform: scale(0.95);
+}
