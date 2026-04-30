@@ -138,11 +138,11 @@ a, button { cursor: pointer; }
   white-space: nowrap; line-height: 1;
 }
 .hero-left {
-  flex: 0 0 50%; display: flex; flex-direction: column;
+  width: 100%; display: flex; flex-direction: column;
   justify-content: center;
-  padding: calc(var(--nav-h) + 40px) 5% 60px 5%;
-  position: relative; z-index: 2;
-  max-width: 700px;
+  padding: calc(var(--nav-h) + 60px) 5% 80px;
+  position: relative; z-index: 3;
+  max-width: 780px;
 }
 .hero-label {
   font-family: 'DM Sans', sans-serif;
@@ -163,15 +163,20 @@ a, button { cursor: pointer; }
   max-width: 420px;
 }
 .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-.hero-right {
-  flex: 0 0 50%; position: relative; overflow: visible;
-}
 .hero-img {
   position: absolute;
-  top: -30px; right: -30px;
-  height: 110%; width: auto;
+  inset: 0;
+  width: 100%; height: 100%;
   object-fit: cover;
-  z-index: 2;
+  z-index: 0;
+  opacity: .45;
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(26,26,26,.92) 0%, rgba(26,26,26,.7) 55%, rgba(26,26,26,.35) 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* ═══════════════════════════════════════════
@@ -667,9 +672,7 @@ a, button { cursor: pointer; }
   .nav-links, .nav-btns { display: none; }
   .hamburger { display: flex; }
   .hero { flex-direction: column; height: auto; min-height: 100vh; }
-  .hero-left { flex: unset; max-width: 100%; padding: calc(var(--nav-h) + 40px) 5% 40px; }
-  .hero-right { flex: unset; min-height: 280px; }
-  .hero-img { top: 0; right: -15px; height: 100%; }
+  .hero-left { max-width: 100%; }
   .feat-grid { grid-template-columns: repeat(2, 1fr); }
   .menu-grid { grid-template-columns: repeat(2, 1fr); }
   .promo { flex-direction: column; height: auto; }
@@ -736,6 +739,10 @@ a, button { cursor: pointer; }
 
   <!-- S1: HERO -->
   <section class="hero noise">
+    <img class="hero-img"
+      src="https://images.unsplash.com/photo-1562967914-608f82629710?w=1600&fit=crop&q=80"
+      alt="Popeyes Fried Chicken"
+      onerror="this.style.background='#2a1208';this.removeAttribute('src')">
     <div class="hero-watermark">POPEYES</div>
     <div class="hero-left">
       <p class="hero-label">Louisiana Style &nbsp;•&nbsp; Since 1972</p>
@@ -745,12 +752,6 @@ a, button { cursor: pointer; }
         <button class="btn btn-orange" onclick="go('menu')">Order Now</button>
         <button class="btn btn-white-outline" onclick="go('menu')">View Menu</button>
       </div>
-    </div>
-    <div class="hero-right">
-      <img class="hero-img"
-        src="https://images.unsplash.com/photo-1562967914-608f82629710?w=900&fit=crop&q=80"
-        alt="Popeyes Fried Chicken"
-        onerror="this.style.cssText='height:110%;width:50vw;object-fit:cover;position:absolute;top:-30px;right:-30px;background:#2a1208';this.removeAttribute('src')">
     </div>
   </section>
 
