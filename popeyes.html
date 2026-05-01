@@ -209,7 +209,7 @@ a, button { cursor: pointer; }
   flex: 0 0 138px; width: 138px;
   background: var(--white);
   box-shadow: 0 2px 14px rgba(0,0,0,.09);
-  padding: 52px 10px 18px;
+  padding: 70px 10px 18px;
   display: flex; flex-direction: column;
   align-items: center; gap: 10px;
   cursor: pointer; position: relative;
@@ -221,18 +221,21 @@ a, button { cursor: pointer; }
 }
 .cat-img-wrap {
   position: absolute;
-  top: -40px; left: 50%;
+  top: -48px; left: 50%;
   transform: translateX(-50%);
-  width: 90px; height: 90px;
+  width: 108px; height: 108px;
   border-radius: 50%; overflow: hidden;
   border: 4px solid #fff;
-  box-shadow: 0 4px 16px rgba(0,0,0,.15);
-  transition: border-color .22s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+  transition: border-color .22s ease, box-shadow .22s ease;
   flex-shrink: 0;
 }
 .cat-img-wrap img {
   width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .35s ease;
 }
+.cat-card:hover .cat-img-wrap img,
+.cat-card.active .cat-img-wrap img { transform: scale(1.08); }
 .cat-card:hover {
   background: var(--black); color: #fff;
   box-shadow: 0 6px 24px rgba(0,0,0,.18);
@@ -726,6 +729,45 @@ a, button { cursor: pointer; }
   .why-inner { grid-template-columns: 1fr; }
   .why-col:nth-child(2) { border-top: 1px solid rgba(255,255,255,.1); padding-top: 32px; }
   .promo-watermark { font-size: 80px; }
+  .hero-hl { font-size: clamp(52px, 14vw, 80px); }
+  .promo-hl { font-size: clamp(36px, 10vw, 56px); }
+  .cat-card { flex: 0 0 120px; width: 120px; }
+  .cat-img-wrap { width: 80px; height: 80px; top: -36px; }
+  .cat-card { padding: 52px 8px 14px; }
+  .app-text, .app-right { width: 100%; }
+}
+
+/* ══════════════════════════════════════
+   SCROLL REVEAL ANIMATIONS
+══════════════════════════════════════ */
+.rv {
+  opacity: 0;
+  transition: opacity .7s cubic-bezier(.22,1,.36,1),
+              transform .7s cubic-bezier(.22,1,.36,1);
+}
+.rv          { transform: translateY(40px); }
+.rv.left     { transform: translateX(-48px); }
+.rv.right    { transform: translateX(48px); }
+.rv.scale    { transform: scale(.9); }
+.rv.visible  { opacity: 1; transform: none; }
+
+/* stagger delays */
+.rv[data-d="1"] { transition-delay: .1s; }
+.rv[data-d="2"] { transition-delay: .2s; }
+.rv[data-d="3"] { transition-delay: .3s; }
+.rv[data-d="4"] { transition-delay: .4s; }
+.rv[data-d="5"] { transition-delay: .5s; }
+.rv[data-d="6"] { transition-delay: .6s; }
+.rv[data-d="7"] { transition-delay: .7s; }
+
+/* hero entrance fires immediately on load */
+.hero-label  { animation: heroIn .8s .2s both cubic-bezier(.22,1,.36,1); }
+.hero-hl     { animation: heroIn .9s .4s both cubic-bezier(.22,1,.36,1); }
+.hero-body   { animation: heroIn .8s .6s both cubic-bezier(.22,1,.36,1); }
+.hero-ctas   { animation: heroIn .8s .8s both cubic-bezier(.22,1,.36,1); }
+@keyframes heroIn {
+  from { opacity:0; transform:translateY(32px); }
+  to   { opacity:1; transform:translateY(0); }
 }
 </style>
 </head>
@@ -791,51 +833,51 @@ a, button { cursor: pointer; }
       <div class="cat-scroll-outer">
         <div class="cat-scroll">
 
-          <div class="cat-card active">
+          <div class="cat-card active rv" data-d="1">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1562967914-608f82629710?w=200&h=200&fit=crop&q=80" alt="Chicken" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=220&h=220&fit=crop&q=85" alt="Chicken" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
             </div>
             Chicken
           </div>
 
-          <div class="cat-card">
+          <div class="cat-card rv" data-d="2">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop&q=80" alt="Sandwiches" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=220&h=220&fit=crop&q=85" alt="Sandwiches" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
             </div>
             Sandwiches
           </div>
 
-          <div class="cat-card">
+          <div class="cat-card rv" data-d="3">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=200&h=200&fit=crop&q=80" alt="Tenders" onerror="this.style.background='#e06012';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=220&h=220&fit=crop&q=85" alt="Tenders" onerror="this.style.background='#e06012';this.removeAttribute('src')">
             </div>
             Tenders
           </div>
 
-          <div class="cat-card">
+          <div class="cat-card rv" data-d="4">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200&h=200&fit=crop&q=80" alt="Combos" onerror="this.style.background='#1A1A1A';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=220&h=220&fit=crop&q=85" alt="Combos" onerror="this.style.background='#1A1A1A';this.removeAttribute('src')">
             </div>
             Combos
           </div>
 
-          <div class="cat-card">
+          <div class="cat-card rv" data-d="5">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&h=200&fit=crop&q=80" alt="Sides" onerror="this.style.background='#c08030';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=220&h=220&fit=crop&q=85" alt="Sides" onerror="this.style.background='#c08030';this.removeAttribute('src')">
             </div>
             Sides
           </div>
 
-          <div class="cat-card">
+          <div class="cat-card rv" data-d="6">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1559181567-c3190bfbf716?w=200&h=200&fit=crop&q=80" alt="Drinks" onerror="this.style.background='#2060c0';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1499638673689-79a0b5115d87?w=220&h=220&fit=crop&q=85" alt="Drinks" onerror="this.style.background='#e05010';this.removeAttribute('src')">
             </div>
             Drinks
           </div>
 
-          <div class="cat-card">
+          <div class="cat-card rv" data-d="7">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=200&h=200&fit=crop&q=80" alt="Desserts" onerror="this.style.background='#805010';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=220&h=220&fit=crop&q=85" alt="Desserts" onerror="this.style.background='#805010';this.removeAttribute('src')">
             </div>
             Desserts
           </div>
@@ -848,12 +890,12 @@ a, button { cursor: pointer; }
   <!-- S3: FEATURED ITEMS -->
   <section class="featured">
     <div class="featured-inner">
-      <div class="feat-heading-wrap">
+      <div class="feat-heading-wrap rv left">
         <div class="feat-heading-bar"></div>
         <h2 class="feat-heading">THE CLASSICS</h2>
       </div>
       <div class="feat-grid">
-        <div class="feat-card">
+        <div class="feat-card rv" data-d="1">
           <div class="feat-img-wrap">
             <img class="feat-img" src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=600&fit=crop&q=80" alt="Spicy Chicken Sandwich" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
           </div>
@@ -866,7 +908,7 @@ a, button { cursor: pointer; }
             <button class="feat-btn">Add to Order</button>
           </div>
         </div>
-        <div class="feat-card">
+        <div class="feat-card rv" data-d="2">
           <div class="feat-img-wrap">
             <img class="feat-img" src="https://images.unsplash.com/photo-1562967914-608f82629710?w=600&fit=crop&q=80" alt="3 Piece Classic" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
           </div>
@@ -879,7 +921,7 @@ a, button { cursor: pointer; }
             <button class="feat-btn">Add to Order</button>
           </div>
         </div>
-        <div class="feat-card">
+        <div class="feat-card rv" data-d="3">
           <div class="feat-img-wrap">
             <img class="feat-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&fit=crop&q=80" alt="Cajun Fries" onerror="this.style.background='#1A1A1A';this.removeAttribute('src')">
           </div>
@@ -899,13 +941,13 @@ a, button { cursor: pointer; }
   <!-- S4: PROMO BANNER -->
   <section class="promo noise">
     <div class="promo-watermark">HOT</div>
-    <div class="promo-left">
+    <div class="promo-left rv left">
       <p class="promo-label">Limited Time Offer</p>
       <h2 class="promo-hl">SPICY CHICKEN<br>SANDWICH</h2>
       <p class="promo-body">Our legendary sandwich is back and hotter than ever. Crispy, juicy, stacked on a buttered brioche. Try it before it's gone.</p>
       <button class="btn btn-orange" onclick="go('menu')">Order Now</button>
     </div>
-    <div class="promo-right">
+    <div class="promo-right rv right">
       <img class="promo-img"
         src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=700&fit=crop&q=80"
         alt="Spicy Chicken Sandwich"
@@ -916,22 +958,22 @@ a, button { cursor: pointer; }
   <!-- S5: WHY POPEYES -->
   <section class="why">
     <div class="why-inner">
-      <div class="why-col">
+      <div class="why-col rv" data-d="1">
         <div class="why-num">01</div>
         <h3 class="why-title">Louisiana Heritage</h3>
         <p class="why-desc">Born in New Orleans in 1972, our recipes carry the bold, soulful spirit of Louisiana cooking in every bite.</p>
       </div>
-      <div class="why-col">
+      <div class="why-col rv" data-d="2">
         <div class="why-num">02</div>
         <h3 class="why-title">Bold Flavors</h3>
         <p class="why-desc">Our signature spice blend is marinated for 12 hours minimum. You can taste the difference in every single piece.</p>
       </div>
-      <div class="why-col">
+      <div class="why-col rv" data-d="3">
         <div class="why-num">03</div>
         <h3 class="why-title">Fresh Never Frozen</h3>
         <p class="why-desc">We hand-bread every piece fresh in our kitchens. No shortcuts. No freezer shortcuts. Just real, honest chicken.</p>
       </div>
-      <div class="why-col">
+      <div class="why-col rv" data-d="4">
         <div class="why-num">04</div>
         <h3 class="why-title">Made to Order</h3>
         <p class="why-desc">Every order is prepared when you place it. Hot, fresh, and exactly the way Louisiana intended it to taste.</p>
@@ -942,7 +984,7 @@ a, button { cursor: pointer; }
   <!-- S6: APP DOWNLOAD -->
   <section class="app-sec">
     <div class="app-inner">
-      <div class="app-text">
+      <div class="app-text rv left">
         <h2 class="app-hl">Order from anywhere.</h2>
         <p class="app-body">Skip the line, earn rewards, and get exclusive deals only app members get. Download the Popeyes app and never miss a drop of bold flavor.</p>
         <div class="app-btns">
@@ -950,7 +992,7 @@ a, button { cursor: pointer; }
           <button class="btn btn-pill"><span style="margin-right:6px;">▶</span> Google Play</button>
         </div>
       </div>
-      <div class="app-right">
+      <div class="app-right rv scale">
         <div class="app-circle"></div>
         <div class="app-phone">
           <div class="app-phone-screen">
@@ -1198,7 +1240,7 @@ a, button { cursor: pointer; }
   <!-- MID BANNER -->
   <div class="menu-mid noise">
     <div class="menu-mid-wm">COMBO</div>
-    <div class="menu-mid-left">
+    <div class="menu-mid-left rv left">
       <h2 class="menu-mid-hl">BUILD YOUR<br>COMBO.</h2>
       <p class="menu-mid-body">Pick your chicken, choose a side, add a drink — fully custom combos that are always a deal. Make it yours.</p>
       <button class="btn btn-red-outline">Build a Combo</button>
@@ -1346,6 +1388,27 @@ document.querySelectorAll('.feat-btn, .m-card-btn').forEach(btn => {
     }, 1400);
   });
 });
+
+// ── SCROLL REVEAL (Intersection Observer) ──
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.rv').forEach(el => revealObserver.observe(el));
+
+// Re-observe when switching to menu page so menu animations fire fresh
+const origGo = go;
+window.go = function(page) {
+  origGo(page);
+  setTimeout(() => {
+    document.querySelectorAll('.rv:not(.visible)').forEach(el => revealObserver.observe(el));
+  }, 50);
+};
 </script>
 </body>
 </html>
