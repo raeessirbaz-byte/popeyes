@@ -183,37 +183,66 @@ a, button { cursor: pointer; }
    HOME — SECTION 2: CATEGORY STRIP
 ═══════════════════════════════════════════ */
 .cat-strip {
-  background: var(--cream);
-  padding: 32px 5%;
+  background: #fff;
+  padding: 48px 5% 40px;
 }
 .cat-strip-inner { max-width: 1400px; margin: 0 auto; }
 .cat-title {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 36px; letter-spacing: .02em;
-  color: var(--black); margin-bottom: 20px;
+  color: var(--black); margin-bottom: 32px;
 }
+/* outer wrapper: clips x, allows y overflow for circle bleed */
+.cat-scroll-outer {
+  overflow-x: auto; overflow-y: visible;
+  scrollbar-width: none;
+  padding-top: 44px; /* headroom for circle overflow */
+  margin-top: -44px;
+}
+.cat-scroll-outer::-webkit-scrollbar { display: none; }
 .cat-scroll {
-  display: flex; gap: 12px;
-  overflow-x: auto; scrollbar-width: none;
+  display: inline-flex; gap: 16px;
+  min-width: 100%;
   padding-bottom: 4px;
 }
-.cat-scroll::-webkit-scrollbar { display: none; }
 .cat-card {
-  flex: 0 0 140px; width: 140px;
-  border: 2px solid var(--black);
-  background: transparent;
-  padding: 16px 8px;
+  flex: 0 0 138px; width: 138px;
+  background: var(--white);
+  box-shadow: 0 2px 14px rgba(0,0,0,.09);
+  padding: 52px 10px 18px;
   display: flex; flex-direction: column;
-  align-items: center; gap: 8px;
-  cursor: pointer;
-  transition: background .2s, color .2s, border-color .2s;
+  align-items: center; gap: 10px;
+  cursor: pointer; position: relative;
+  transition: background .22s ease, color .22s ease, box-shadow .22s ease;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 20px; letter-spacing: .02em;
-  color: var(--black);
+  font-size: 16px; letter-spacing: .04em;
+  color: var(--black); text-align: center;
+  border: none;
 }
-.cat-card .cat-icon { font-size: 1.8rem; line-height: 1; }
-.cat-card:hover { background: var(--black); color: #fff; border-color: var(--black); }
-.cat-card.active { background: var(--orange); color: #fff; border-color: var(--orange); }
+.cat-img-wrap {
+  position: absolute;
+  top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 90px; height: 90px;
+  border-radius: 50%; overflow: hidden;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+  transition: border-color .22s ease;
+  flex-shrink: 0;
+}
+.cat-img-wrap img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.cat-card:hover {
+  background: var(--black); color: #fff;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18);
+}
+.cat-card:hover .cat-img-wrap { border-color: var(--black); }
+.cat-card.active {
+  background: var(--orange); color: #fff;
+  box-shadow: 0 6px 24px rgba(240,90,34,.35);
+}
+.cat-card.active .cat-img-wrap { border-color: var(--orange); }
 
 /* ═══════════════════════════════════════════
    HOME — SECTION 3: FEATURED ITEMS
@@ -759,14 +788,59 @@ a, button { cursor: pointer; }
   <div class="cat-strip">
     <div class="cat-strip-inner">
       <h2 class="cat-title">WHAT ARE YOU CRAVING?</h2>
-      <div class="cat-scroll">
-        <div class="cat-card active"><span class="cat-icon">🍗</span>Chicken</div>
-        <div class="cat-card"><span class="cat-icon">🥪</span>Sandwiches</div>
-        <div class="cat-card"><span class="cat-icon">🍤</span>Tenders</div>
-        <div class="cat-card"><span class="cat-icon">🥡</span>Combos</div>
-        <div class="cat-card"><span class="cat-icon">🍟</span>Sides</div>
-        <div class="cat-card"><span class="cat-icon">🥤</span>Drinks</div>
-        <div class="cat-card"><span class="cat-icon">🍮</span>Desserts</div>
+      <div class="cat-scroll-outer">
+        <div class="cat-scroll">
+
+          <div class="cat-card active">
+            <div class="cat-img-wrap">
+              <img src="https://images.unsplash.com/photo-1562967914-608f82629710?w=200&h=200&fit=crop&q=80" alt="Chicken" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+            </div>
+            Chicken
+          </div>
+
+          <div class="cat-card">
+            <div class="cat-img-wrap">
+              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=200&fit=crop&q=80" alt="Sandwiches" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
+            </div>
+            Sandwiches
+          </div>
+
+          <div class="cat-card">
+            <div class="cat-img-wrap">
+              <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=200&h=200&fit=crop&q=80" alt="Tenders" onerror="this.style.background='#e06012';this.removeAttribute('src')">
+            </div>
+            Tenders
+          </div>
+
+          <div class="cat-card">
+            <div class="cat-img-wrap">
+              <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200&h=200&fit=crop&q=80" alt="Combos" onerror="this.style.background='#1A1A1A';this.removeAttribute('src')">
+            </div>
+            Combos
+          </div>
+
+          <div class="cat-card">
+            <div class="cat-img-wrap">
+              <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&h=200&fit=crop&q=80" alt="Sides" onerror="this.style.background='#c08030';this.removeAttribute('src')">
+            </div>
+            Sides
+          </div>
+
+          <div class="cat-card">
+            <div class="cat-img-wrap">
+              <img src="https://images.unsplash.com/photo-1559181567-c3190bfbf716?w=200&h=200&fit=crop&q=80" alt="Drinks" onerror="this.style.background='#2060c0';this.removeAttribute('src')">
+            </div>
+            Drinks
+          </div>
+
+          <div class="cat-card">
+            <div class="cat-img-wrap">
+              <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=200&h=200&fit=crop&q=80" alt="Desserts" onerror="this.style.background='#805010';this.removeAttribute('src')">
+            </div>
+            Desserts
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
