@@ -192,60 +192,66 @@ a, button { cursor: pointer; }
   font-size: 72px; letter-spacing: .02em;
   color: var(--black); margin-bottom: 64px;
 }
-/* outer wrapper: clips x, allows y overflow for circle bleed */
 .cat-scroll-outer {
-  overflow-x: auto; overflow-y: visible;
+  overflow-x: auto; overflow-y: hidden;
   scrollbar-width: none;
-  padding-top: 44px; /* headroom for circle overflow */
-  margin-top: -44px;
 }
 .cat-scroll-outer::-webkit-scrollbar { display: none; }
 .cat-scroll {
-  display: inline-flex; gap: 16px;
+  display: inline-flex; gap: 20px;
   min-width: 100%;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
 }
 .cat-card {
-  flex: 0 0 138px; width: 138px;
+  flex: 0 0 210px; width: 210px;
   background: var(--white);
-  box-shadow: 0 2px 14px rgba(0,0,0,.09);
-  padding: 70px 10px 18px;
+  border-radius: 16px;
+  box-shadow: 0 2px 18px rgba(0,0,0,.08);
+  padding: 0 0 20px 0;
   display: flex; flex-direction: column;
-  align-items: center; gap: 10px;
+  gap: 0;
   cursor: pointer; position: relative;
-  transition: background .22s ease, color .22s ease, box-shadow .22s ease;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 16px; letter-spacing: .04em;
-  color: var(--black); text-align: center;
-  border: none;
+  transition: box-shadow .25s ease, transform .25s ease;
+  overflow: hidden;
+  border: 2px solid transparent;
+}
+.cat-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
+  transform: translateY(-4px);
+  border-color: var(--black);
+}
+.cat-card.active {
+  border-color: var(--orange);
+  box-shadow: 0 8px 32px rgba(240,90,34,.25);
 }
 .cat-img-wrap {
-  position: absolute;
-  top: -48px; left: 50%;
-  transform: translateX(-50%);
-  width: 108px; height: 108px;
-  border-radius: 50%; overflow: hidden;
-  border: 4px solid #fff;
-  box-shadow: 0 6px 20px rgba(0,0,0,.18);
-  transition: border-color .22s ease, box-shadow .22s ease;
+  width: 100%; height: 165px;
+  overflow: hidden; position: relative;
+  border-radius: 14px 14px 60% 60% / 14px 14px 40px 40px;
   flex-shrink: 0;
 }
 .cat-img-wrap img {
   width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: transform .35s ease;
+  transition: transform .4s ease;
 }
-.cat-card:hover .cat-img-wrap img,
-.cat-card.active .cat-img-wrap img { transform: scale(1.08); }
-.cat-card:hover {
-  background: var(--black); color: #fff;
-  box-shadow: 0 6px 24px rgba(0,0,0,.18);
+.cat-card:hover .cat-img-wrap img { transform: scale(1.07); }
+.cat-card-body {
+  padding: 16px 16px 0;
+  display: flex; flex-direction: column; gap: 6px;
 }
-.cat-card:hover .cat-img-wrap { border-color: var(--black); }
-.cat-card.active {
-  background: var(--orange); color: #fff;
-  box-shadow: 0 6px 24px rgba(240,90,34,.35);
+.cat-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px; letter-spacing: .04em;
+  color: var(--black); line-height: 1.1;
+  transition: color .22s ease;
 }
-.cat-card.active .cat-img-wrap { border-color: var(--orange); }
+.cat-card.active .cat-card-name { color: var(--orange); }
+.cat-card:hover .cat-card-name { color: var(--black); }
+.cat-card-desc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px; color: #777;
+  line-height: 1.5;
+}
 
 /* ═══════════════════════════════════════════
    HOME — SECTION 3: FEATURED ITEMS
@@ -835,51 +841,72 @@ a, button { cursor: pointer; }
 
           <div class="cat-card active rv" data-d="1">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=220&h=220&fit=crop&q=85" alt="Chicken" onerror="this.style.background='#F05A22';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=420&h=330&fit=crop&q=85" alt="Chicken">
             </div>
-            Chicken
+            <div class="cat-card-body">
+              <div class="cat-card-name">Chicken</div>
+              <p class="cat-card-desc">Bold, crispy Louisiana-style fried chicken.</p>
+            </div>
           </div>
 
           <div class="cat-card rv" data-d="2">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=220&h=220&fit=crop&q=85" alt="Sandwiches" onerror="this.style.background='#C8102E';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=420&h=330&fit=crop&q=85" alt="Sandwiches">
             </div>
-            Sandwiches
+            <div class="cat-card-body">
+              <div class="cat-card-name">Sandwiches</div>
+              <p class="cat-card-desc">Stacked high with our signature spicy fillet.</p>
+            </div>
           </div>
 
           <div class="cat-card rv" data-d="3">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=220&h=220&fit=crop&q=85" alt="Tenders" onerror="this.style.background='#e06012';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=420&h=330&fit=crop&q=85" alt="Tenders">
             </div>
-            Tenders
+            <div class="cat-card-body">
+              <div class="cat-card-name">Tenders</div>
+              <p class="cat-card-desc">Juicy strips, hand-battered every morning.</p>
+            </div>
           </div>
 
           <div class="cat-card rv" data-d="4">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=220&h=220&fit=crop&q=85" alt="Combos" onerror="this.style.background='#1A1A1A';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=420&h=330&fit=crop&q=85" alt="Combos">
             </div>
-            Combos
+            <div class="cat-card-body">
+              <div class="cat-card-name">Combos</div>
+              <p class="cat-card-desc">Full meals with sides &amp; a drink included.</p>
+            </div>
           </div>
 
           <div class="cat-card rv" data-d="5">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=220&h=220&fit=crop&q=85" alt="Sides" onerror="this.style.background='#c08030';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=420&h=330&fit=crop&q=85" alt="Sides">
             </div>
-            Sides
+            <div class="cat-card-body">
+              <div class="cat-card-name">Sides</div>
+              <p class="cat-card-desc">Red beans, mashed potatoes, coleslaw &amp; more.</p>
+            </div>
           </div>
 
           <div class="cat-card rv" data-d="6">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1499638673689-79a0b5115d87?w=220&h=220&fit=crop&q=85" alt="Drinks" onerror="this.style.background='#e05010';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1499638673689-79a0b5115d87?w=420&h=330&fit=crop&q=85" alt="Drinks">
             </div>
-            Drinks
+            <div class="cat-card-body">
+              <div class="cat-card-name">Drinks</div>
+              <p class="cat-card-desc">Refreshing beverages to cool the heat.</p>
+            </div>
           </div>
 
           <div class="cat-card rv" data-d="7">
             <div class="cat-img-wrap">
-              <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=220&h=220&fit=crop&q=85" alt="Desserts" onerror="this.style.background='#805010';this.removeAttribute('src')">
+              <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=420&h=330&fit=crop&q=85" alt="Desserts">
             </div>
-            Desserts
+            <div class="cat-card-body">
+              <div class="cat-card-name">Desserts</div>
+              <p class="cat-card-desc">Sweet finishes to every great meal.</p>
+            </div>
           </div>
 
         </div>
